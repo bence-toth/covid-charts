@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
 </head><body>
+  <script src="./countries.js"></script>
   <script>
     const isNotProvince = ({Province}) => Province === ''
 
@@ -45,13 +46,26 @@
         })
     )
 
-    fetch('https://api.covid19api.com/dayone/country/denmark')
-      .then(response => response.json())
-      .then(dataPoints => {
-        const relevantDataPoints = dataPoints.filter(isNotProvince)
-        const dateOfFirstConfirmedCase = getDateOfFirstConfirmedCase(relevantDataPoints)
-        const movingWeeklyAverageOfDailyDeaths = getMovingWeeklyAverageOfDailyDeaths(relevantDataPoints)
-        console.log({relevantDataPoints, movingWeeklyAverageOfDailyDeaths, dateOfFirstConfirmedCase})
+    const getCountryData = async ({slug, population}) => {
+      const response = await fetch(`https://api.covid19api.com/dayone/country/${slug}`)
+      const dataPoints = await response.json()
+      const relevantDataPoints = dataPoints.filter(isNotProvince)
+      const dateOfFirstConfirmedCase = getDateOfFirstConfirmedCase(relevantDataPoints)
+      const movingWeeklyAverageOfDailyDeaths = getMovingWeeklyAverageOfDailyDeaths(relevantDataPoints)
+      const movingWeeklyAverageOfDailyDeathsPerMillion = movingWeeklyAverageOfDailyDeaths.map(
+        deaths => deaths * 1000000 / population
+      )
+      return movingWeeklyAverageOfDailyDeathsPerMillion
+    }
+
+    const init = async () => {
+      const data = await getCountryData({
+        slug: 'denmark',
+        population: 5792202
       })
+      console.log(data)
+    }
+
+    init()
   </script>
 </body></html>
