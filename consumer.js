@@ -38,7 +38,8 @@ const getMovingWeeklyAverageOfDailyDeaths = dataPoints => (
     })
 )
 
-const getCountryData = async ({slug, population}) => {
+const getCountryData = async slug => {
+  const population = countries.find(({slug: slugToFind}) => slug === slugToFind).population
   const response = await fetch(`https://api.covid19api.com/dayone/country/${slug}`)
   const dataPoints = await response.json()
   const relevantDataPoints = dataPoints.filter(isNotProvince)

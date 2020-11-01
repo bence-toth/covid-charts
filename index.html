@@ -46,10 +46,7 @@
             else {
               selectedCountries.push(selectedCountry)
               if (!data[selectedCountry]) {
-                const newData = await getCountryData({
-                  slug: selectedCountry,
-                  population: 5792202 // TODO: Fix this
-                })
+                const newData = await getCountryData(selectedCountry)
                 data[selectedCountry] = newData
                 console.log(data)
               }
@@ -61,10 +58,7 @@
       )
 
       const initialData = await Promise.all(
-        selectedCountries.map(country => getCountryData({
-          slug: country,
-          population: 5792202 // TODO: Fix this
-        }))
+        selectedCountries.map(country => getCountryData(country))
       )
       selectedCountries.forEach((country, countryIndex) => {
         data[country] = initialData[countryIndex]
