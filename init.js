@@ -27,9 +27,7 @@ const init = async () => {
           }
           else {
             selectedCountries = selectedCountries.filter(slug => slug !== selectedCountry)
-            // TODO: Rerender chart
-            console.log(data)
-            console.log(selectedCountries)
+            drawChart({data, selectedCountries})
           }
         }
         else {
@@ -38,9 +36,7 @@ const init = async () => {
             const newData = await getCountryData(selectedCountry)
             data[selectedCountry] = newData
           }
-          // TODO: Rerender chart
-          console.log(data)
-          console.log(selectedCountries)
+          drawChart({data, selectedCountries})
         }
       })
     }
@@ -54,7 +50,7 @@ const init = async () => {
   selectedCountries.forEach((country, countryIndex) => {
     data[country] = initialData[countryIndex]
   })
-  // TODO: Render chart
-  console.log(data)
-  console.log(selectedCountries)
+  drawChart({data, selectedCountries})
+
+  // TODO: Redraw chart on window resize (debounce)
 }

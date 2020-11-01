@@ -4,6 +4,10 @@ const getDateOfFirstConfirmedCase = dataPoints => (
   new Date(dataPoints[0].Date)
 )
 
+const getDateOfLastConfirmedCase = dataPoints => (
+  new Date(dataPoints[dataPoints.length - 1].Date)
+)
+
 const getDailyDeaths = dataPoints => (
   dataPoints
     .map((dataPoint, dataPointIndex, dataPoints) => {
@@ -44,12 +48,14 @@ const getCountryData = async slug => {
   const dataPoints = await response.json()
   const relevantDataPoints = dataPoints.filter(isNotProvince)
   const dateOfFirstConfirmedCase = getDateOfFirstConfirmedCase(relevantDataPoints)
+  const dateOfLastConfirmedCase = getDateOfLastConfirmedCase(relevantDataPoints)
   const movingWeeklyAverageOfDailyDeaths = getMovingWeeklyAverageOfDailyDeaths(relevantDataPoints)
   const movingWeeklyAverageOfDailyDeathsPerMillion = movingWeeklyAverageOfDailyDeaths.map(
     deaths => deaths * 1000000 / population
   )
   return {
     dateOfFirstConfirmedCase,
+    dateOfLastConfirmedCase,
     movingWeeklyAverageOfDailyDeathsPerMillion
   }
 }
