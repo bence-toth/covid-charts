@@ -1,0 +1,36 @@
+html, body {
+  height: 100%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  --sidebarWidth: 300px;
+}
+
+aside {
+  width: var(--sidebarWidth);
+  height: 100%;
+  border: 1px solid red;
+}
+
+main {
+  width: calc(100% - var(--sidebarWidth));
+  height: 100%;
+  border: 1px solid blue;
+}
+
+h1 {
+  height: 50px;
+  border: 1px solid green;
+}
+
+#chart {
+  height: calc(100% - 50px);
+  border: 1px solid magenta;
+}
