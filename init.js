@@ -54,3 +54,9 @@ const init = async () => {
 
   // TODO: Redraw chart on window resize (debounce)
 }
+
+google.charts.load('current', {
+  packages: ['corechart']
+})
+
+google.charts.setOnLoadCallback(init)
