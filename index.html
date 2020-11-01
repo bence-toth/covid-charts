@@ -10,8 +10,39 @@
     <h1>Header will come here</h1>
     <div id='chart'>Chart will come here</div>
   </main>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="./countries.js"></script>
   <script src="./consumer.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Year', 'Sales', 'Expenses'],
+        ['2004',  1000,      400],
+        ['2005',  1170,      460],
+        ['2006',  660,       1120],
+        ['2007',  1030,      540]
+      ]);
+
+      var options = {
+        legend: {
+          position: 'bottom'
+        },
+        chartArea: {
+          width: document.getElementById('chart').clientWidth - 90,
+          height: document.getElementById('chart').clientHeight - 150,
+          top: 30,
+          right: 0
+        }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart'));
+
+      chart.draw(data, options);
+    }
+  </script>
   <script src="./init.js"></script>
   <script>
     init()

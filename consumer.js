@@ -48,5 +48,8 @@ const getCountryData = async slug => {
   const movingWeeklyAverageOfDailyDeathsPerMillion = movingWeeklyAverageOfDailyDeaths.map(
     deaths => deaths * 1000000 / population
   )
-  return movingWeeklyAverageOfDailyDeathsPerMillion
+  return {
+    dateOfFirstConfirmedCase,
+    movingWeeklyAverageOfDailyDeathsPerMillion
+  }
 }
