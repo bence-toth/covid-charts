@@ -12,64 +12,8 @@
   </main>
   <script src="./countries.js"></script>
   <script src="./consumer.js"></script>
+  <script src="./init.js"></script>
   <script>
-    let selectedCountries = ['denmark', 'hungary']
-    const data = {}
-
-    const init = async () => {
-      const sidebarHtml = countries.map(country => `
-        <div>
-          <input
-            type="checkbox"
-            id="${country.slug}"
-            ${selectedCountries.includes(country.slug) ? 'checked' : ''}
-          />
-          <label for="${country.slug}">${country.name}</label>
-        </div>
-      `).join('\n')
-      document.querySelector('aside').innerHTML = sidebarHtml;
-
-      [...document.querySelectorAll('input[type=checkbox]')].forEach(
-        checkbox => {
-          checkbox.addEventListener('click', async event => {
-            const selectedCountry = event.target.id
-            if (selectedCountries.includes(selectedCountry)) {
-              if (selectedCountries.length <= 1) {
-                event.preventDefault()
-              }
-              else {
-                selectedCountries = selectedCountries.filter(slug => slug !== selectedCountry)
-                // TODO: Rerender chart
-                console.log(selectedCountries)
-              }
-            }
-            else {
-              selectedCountries.push(selectedCountry)
-              if (!data[selectedCountry]) {
-                const newData = await getCountryData(selectedCountry)
-                data[selectedCountry] = newData
-                console.log(data)
-              }
-              // TODO: Rerender chart
-              console.log(selectedCountries)
-            }
-          })
-        }
-      )
-
-      const initialData = await Promise.all(
-        selectedCountries.map(country => getCountryData(country))
-      )
-      selectedCountries.forEach((country, countryIndex) => {
-        data[country] = initialData[countryIndex]
-      })
-      // TODO: Render chart
-      console.log(data)
-
-    }
-
     init()
-
-    // TODO: Add country filter feature
   </script>
 </body></html>
