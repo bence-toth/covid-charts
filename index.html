@@ -31,21 +31,28 @@
 
       [...document.querySelectorAll('input[type=checkbox]')].forEach(
         checkbox => {
-          checkbox.addEventListener('click', event => {
-            const selectedSlug = event.target.id
-            if (selectedCountries.includes(selectedSlug)) {
+          checkbox.addEventListener('click', async event => {
+            const selectedCountry = event.target.id
+            if (selectedCountries.includes(selectedCountry)) {
               if (selectedCountries.length <= 1) {
                 event.preventDefault()
               }
               else {
-                selectedCountries = selectedCountries.filter(slug => slug !== selectedSlug)
+                selectedCountries = selectedCountries.filter(slug => slug !== selectedCountry)
                 // TODO: Rerender chart
                 console.log(selectedCountries)
               }
             }
             else {
-              selectedCountries.push(selectedSlug)
-              // TODO: Fetch new data if needed
+              selectedCountries.push(selectedCountry)
+              if (!data[selectedCountry]) {
+                const newData = await getCountryData({
+                  slug: selectedCountry,
+                  population: 5792202 // TODO: Fix this
+                })
+                data[selectedCountry] = newData
+                console.log(data)
+              }
               // TODO: Rerender chart
               console.log(selectedCountries)
             }
@@ -56,7 +63,7 @@
       const initialData = await Promise.all(
         selectedCountries.map(country => getCountryData({
           slug: country,
-          population: 5792202
+          population: 5792202 // TODO: Fix this
         }))
       )
       selectedCountries.forEach((country, countryIndex) => {
