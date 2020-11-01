@@ -5,45 +5,53 @@
   <title>Document</title>
 </head><body>
   <script>
+    const isNotProvince = ({Province}) => Province === ''
+
+    const getDateOfFirstConfirmedCase = dataPoints => (
+      new Date(dataPoints[0].Date)
+    )
+
+    const getDailyDeaths = dataPoints => (
+      dataPoints
+        .map((dataPoint, dataPointIndex, dataPoints) => {
+          const deathsToday = dataPoint.Deaths
+          if (dataPointIndex === 0) {
+            return deathsToday
+          }
+          const deathsYesterday = dataPoints[dataPointIndex - 1].Deaths
+          // Ignore decreasing total deaths
+          const correctedDeathsToday = (
+            (deathsYesterday > deathsToday)
+              ? deathsYesterday
+              : deathsToday
+          )
+          return (correctedDeathsToday - deathsYesterday)
+        })
+    )
+
+    const getMovingWeeklyAverageOfDailyDeaths = dataPoints => (
+      getDailyDeaths(dataPoints)
+        .map((dataPoint, dataPointIndex, dataPoints) => {
+          return (
+            (dataPoint
+              + (dataPoints[dataPointIndex - 1] || 0)
+              + (dataPoints[dataPointIndex - 2] || 0)
+              + (dataPoints[dataPointIndex - 3] || 0)
+              + (dataPoints[dataPointIndex - 4] || 0)
+              + (dataPoints[dataPointIndex - 5] || 0)
+              + (dataPoints[dataPointIndex - 6] || 0)
+            ) / 7
+          )
+        })
+    )
+
     fetch('https://api.covid19api.com/dayone/country/denmark')
       .then(response => response.json())
       .then(dataPoints => {
-        console.log(dataPoints)
-        const dateOfFirstConfirmedCase = new Date(dataPoints[0].Date)
-        const dailyDeaths =
-          // Calculate daily deaths
-          dataPoints
-            .filter(({Province}) => Province === '')
-            .map((dataPoint, dataPointIndex, dataPoints) => {
-              const deathsToday = dataPoint.Deaths
-              if (dataPointIndex === 0) {
-                return deathsToday
-              }
-              const deathsYesterday = dataPoints[dataPointIndex - 1].Deaths
-              // Ignore decreasing total deaths
-              const correctedDeathsToday = (
-                (deathsYesterday > deathsToday)
-                  ? deathsYesterday
-                  : deathsToday
-              )
-              return (correctedDeathsToday - deathsYesterday)
-            })
-        // Calculate moving weekly average
-        const movingWeeklyAverageOfDailyDeaths = dailyDeaths
-          .map((dataPoint, dataPointIndex, dataPoints) => {
-            return (
-              (dataPoint
-                + dataPoints[dataPointIndex + 1]
-                + dataPoints[dataPointIndex + 2]
-                + dataPoints[dataPointIndex + 3]
-                + dataPoints[dataPointIndex + 4]
-                + dataPoints[dataPointIndex + 5]
-                + dataPoints[dataPointIndex + 6]
-              ) / 7
-            )
-          })
-          .filter(value => value !== NaN)
-        console.log(dailyDeaths, movingWeeklyAverageOfDailyDeaths, dateOfFirstConfirmedCase)
+        const relevantDataPoints = dataPoints.filter(isNotProvince)
+        const dateOfFirstConfirmedCase = getDateOfFirstConfirmedCase(relevantDataPoints)
+        const movingWeeklyAverageOfDailyDeaths = getMovingWeeklyAverageOfDailyDeaths(relevantDataPoints)
+        console.log({relevantDataPoints, movingWeeklyAverageOfDailyDeaths, dateOfFirstConfirmedCase})
       })
   </script>
 </body></html>
