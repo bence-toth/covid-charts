@@ -13,7 +13,48 @@
   <script src="./countries.js"></script>
   <script src="./consumer.js"></script>
   <script>
+    let selectedCountries = ['denmark', 'hungary']
+
     const init = async () => {
+      const sidebarHtml = countries.map(country => `
+        <div>
+          <input
+            type="checkbox"
+            id="${country.slug}"
+            ${selectedCountries.includes(country.slug) ? 'checked' : ''}
+          />
+          <label for="${country.slug}">${country.name}</label>
+        </div>
+      `).join('\n')
+      document.querySelector('aside').innerHTML = sidebarHtml;
+
+      [...document.querySelectorAll('input[type=checkbox]')].forEach(
+        checkbox => {
+          checkbox.addEventListener('click', event => {
+            const selectedSlug = event.target.id
+            if (selectedCountries.includes(selectedSlug)) {
+              if (selectedCountries.length <= 1) {
+                event.preventDefault()
+              }
+              else {
+                selectedCountries = selectedCountries.filter(slug => slug !== selectedSlug)
+                // TODO: Rerender chart
+                console.log(selectedCountries)
+              }
+            }
+            else {
+              selectedCountries.push(selectedSlug)
+              // TODO: Fetch new data if needed
+              // TODO: Rerender chart
+              console.log(selectedCountries)
+            }
+          })
+        }
+      )
+
+      // TODO: Fetch data for initial selection
+      // TODO: Render chart
+
       const data = await getCountryData({
         slug: 'denmark',
         population: 5792202
@@ -22,5 +63,7 @@
     }
 
     init()
+
+    // TODO: Add country filter feature
   </script>
 </body></html>
