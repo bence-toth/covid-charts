@@ -32,7 +32,7 @@ const init = async () => {
   document.querySelector('aside').innerHTML = sidebarHtml;
 
   // Handle checkbox check/uncheck
-  [...document.querySelectorAll('input[type=checkbox]')].forEach(
+  [...document.querySelectorAll('input[type=checkbox]:not(#countryMenuVisible)')].forEach(
     checkbox => {
       checkbox.addEventListener('click', async event => {
         const selectedCountry = event.target.id
@@ -55,7 +55,6 @@ const init = async () => {
         }
       })
     }
-    // TODO: Add country filter feature
   )
 
   // Load and show initial data

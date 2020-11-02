@@ -5,11 +5,17 @@
   <link rel="stylesheet" href="./styles.css" />
   <title>Document</title>
 </head><body>
+  <input type="checkbox" id="countryMenuVisible" />
   <aside></aside>
   <main>
-    <h1>7-day moving average of COVID-19 deaths per million people</h1>
+    <h1>
+      <div>
+        7-day moving average of COVID-19 <br />deaths per million people
+      </div>
+    </h1>
     <div id='chart'></div>
   </main>
+  <label for="countryMenuVisible"></label>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="./countries.js"></script>
   <script src="./consumer.js"></script>
