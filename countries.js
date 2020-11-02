@@ -4,11 +4,11 @@ const countries = [
     slug:"afghanistan",
     population: 38928346
   },
-  {
-    name: "Åland Islands",
-    slug:"ala-aland-islands",
-    population: 29789
-  },
+  // {
+  //   name: "Åland Islands",
+  //   slug:"ala-aland-islands",
+  //   population: 29789
+  // },
   {
     name: "Albania",
     slug:"albania",
@@ -19,11 +19,11 @@ const countries = [
     slug:"algeria",
     population: 43851044
   },
-  {
-    name: "American Samoa",
-    slug:"american-samoa",
-    population: 55191
-  },
+  // {
+  //   name: "American Samoa",
+  //   slug:"american-samoa",
+  //   population: 55191
+  // },
   {
     name: "Andorra",
     slug:"andorra",
@@ -34,16 +34,16 @@ const countries = [
     slug:"angola",
     population: 32866272
   },
-  {
-    name: "Anguilla",
-    slug:"anguilla",
-    population: 15003
-  },
-  {
-    name: "Antarctica",
-    slug:"antarctica",
-    population: 2000
-  },
+  // {
+  //   name: "Anguilla",
+  //   slug:"anguilla",
+  //   population: 15003
+  // },
+  // {
+  //   name: "Antarctica",
+  //   slug:"antarctica",
+  //   population: 2000
+  // },
   {
     name: "Antigua and Barbuda",
     slug:"antigua-and-barbuda",
@@ -59,11 +59,11 @@ const countries = [
     slug:"armenia",
     population: 2963243
   },
-  {
-    name: "Aruba",
-    slug:"aruba",
-    population: 106766
-  },
+  // {
+  //   name: "Aruba",
+  //   slug:"aruba",
+  //   population: 106766
+  // },
   {
     name: "Australia",
     slug:"australia",
@@ -119,11 +119,11 @@ const countries = [
     slug:"benin",
     population: 12123200
   },
-  {
-    name: "Bermuda",
-    slug:"bermuda",
-    population: 62278
-  },
+  // {
+  //   name: "Bermuda",
+  //   slug:"bermuda",
+  //   population: 62278
+  // },
   {
     name: "Bhutan",
     slug:"bhutan",
@@ -144,26 +144,26 @@ const countries = [
     slug:"botswana",
     population: 2351627
   },
-  {
-    name: "Bouvet Island",
-    slug:"bouvet-island",
-    population: 1
-  },
+  // {
+  //   name: "Bouvet Island",
+  //   slug:"bouvet-island",
+  //   population: 1
+  // },
   {
     name: "Brazil",
     slug:"brazil",
     population: 212559417
   },
-  {
-    name: "British Indian Ocean Territory",
-    slug:"british-indian-ocean-territory",
-    population: 3000
-  },
-  {
-    name: "British Virgin Islands",
-    slug:"british-virgin-islands",
-    population: 30231
-  },
+  // {
+  //   name: "British Indian Ocean Territory",
+  //   slug:"british-indian-ocean-territory",
+  //   population: 3000
+  // },
+  // {
+  //   name: "British Virgin Islands",
+  //   slug:"british-virgin-islands",
+  //   population: 30231
+  // },
   {
     name: "Brunei Darussalam",
     slug:"brunei",
@@ -204,11 +204,11 @@ const countries = [
     slug:"cape-verde",
     population: 555987
   },
-  {
-    name: "Cayman Islands",
-    slug:"cayman-islands",
-    population: 65722
-  },
+  // {
+  //   name: "Cayman Islands",
+  //   slug:"cayman-islands",
+  //   population: 65722
+  // },
   {
     name: "Central African Republic",
     slug:"central-african-republic",
@@ -229,16 +229,16 @@ const countries = [
     slug:"china",
     population: 1439323776
   },
-  {
-    name: "Christmas Island",
-    slug:"christmas-island",
-    population: 1843
-  },
-  {
-    name: "Cocos (Keeling) Islands",
-    slug:"cocos-keeling-islands",
-    population: 596
-  },
+  // {
+  //   name: "Christmas Island",
+  //   slug:"christmas-island",
+  //   population: 1843
+  // },
+  // {
+  //   name: "Cocos (Keeling) Islands",
+  //   slug:"cocos-keeling-islands",
+  //   population: 596
+  // },
   {
     name: "Colombia",
     slug:"colombia",
@@ -259,11 +259,11 @@ const countries = [
     slug:"congo-kinshasa",
     population: 89561403
   },
-  {
-    name: "Cook Islands",
-    slug:"cook-islands",
-    population: 17564
-  },
+  // {
+  //   name: "Cook Islands",
+  //   slug:"cook-islands",
+  //   population: 17564
+  // },
   {
     name: "Costa Rica",
     slug:"costa-rica",
@@ -349,16 +349,16 @@ const countries = [
     slug:"ethiopia",
     population: 114963588
   },
-  {
-    name: "Falkland Islands (Malvinas)",
-    slug:"falkland-islands-malvinas",
-    population: 3480
-  },
-  {
-    name: "Faroe Islands",
-    slug:"faroe-islands",
-    population: 48497
-  },
+  // {
+  //   name: "Falkland Islands (Malvinas)",
+  //   slug:"falkland-islands-malvinas",
+  //   population: 3480
+  // },
+  // {
+  //   name: "Faroe Islands",
+  //   slug:"faroe-islands",
+  //   population: 48497
+  // },
   {
     name: "Fiji",
     slug:"fiji",
@@ -374,21 +374,21 @@ const countries = [
     slug:"france",
     population: 65273511
   },
-  {
-    name: "French Guiana",
-    slug:"french-guiana",
-    population: 298682
-  },
-  {
-    name: "French Polynesia",
-    slug:"french-polynesia",
-    population: 280908
-  },
-  {
-    name: "French Southern Territories",
-    slug:"french-southern-territories",
-    population: 300
-  },
+  // {
+  //   name: "French Guiana",
+  //   slug:"french-guiana",
+  //   population: 298682
+  // },
+  // {
+  //   name: "French Polynesia",
+  //   slug:"french-polynesia",
+  //   population: 280908
+  // },
+  // {
+  //   name: "French Southern Territories",
+  //   slug:"french-southern-territories",
+  //   population: 300
+  // },
   {
     name: "Gabon",
     slug:"gabon",
@@ -414,46 +414,46 @@ const countries = [
     slug:"ghana",
     population: 31072940
   },
-  {
-    name: "Gibraltar",
-    slug:"gibraltar",
-    population: 33691
-  },
+  // {
+  //   name: "Gibraltar",
+  //   slug:"gibraltar",
+  //   population: 33691
+  // },
   {
     name: "Greece",
     slug:"greece",
     population: 10423054
   },
-  {
-    name: "Greenland",
-    slug:"greenland",
-    population: 56770
-  },
+  // {
+  //   name: "Greenland",
+  //   slug:"greenland",
+  //   population: 56770
+  // },
   {
     name: "Grenada",
     slug:"grenada",
     population: 112523
   },
-  {
-    name: "Guadeloupe",
-    slug:"guadeloupe",
-    population: 400124
-  },
-  {
-    name: "Guam",
-    slug:"guam",
-    population: 168775
-  },
+  // {
+  //   name: "Guadeloupe",
+  //   slug:"guadeloupe",
+  //   population: 400124
+  // },
+  // {
+  //   name: "Guam",
+  //   slug:"guam",
+  //   population: 168775
+  // },
   {
     name: "Guatemala",
     slug:"guatemala",
     population: 17915568
   },
-  {
-    name: "Guernsey",
-    slug:"guernsey",
-    population: 67052
-  },
+  // {
+  //   name: "Guernsey",
+  //   slug:"guernsey",
+  //   population: 67052
+  // },
   {
     name: "Guinea",
     slug:"guinea",
@@ -474,11 +474,11 @@ const countries = [
     slug:"haiti",
     population: 11402528
   },
-  {
-    name: "Heard and Mcdonald Islands",
-    slug:"heard-and-mcdonald-islands",
-    population: 1
-  },
+  // {
+  //   name: "Heard and Mcdonald Islands",
+  //   slug:"heard-and-mcdonald-islands",
+  //   population: 1
+  // },
   {
     name: "Holy See (Vatican City State)",
     slug:"holy-see-vatican-city-state",
@@ -489,11 +489,11 @@ const countries = [
     slug:"honduras",
     population: 9904607
   },
-  {
-    name: "Hong Kong, SAR China",
-    slug:"hong-kong-sar-china",
-    population: 7496981
-  },
+  // {
+  //   name: "Hong Kong, SAR China",
+  //   slug:"hong-kong-sar-china",
+  //   population: 7496981
+  // },
   {
     name: "Hungary",
     slug:"hungary",
@@ -529,11 +529,11 @@ const countries = [
     slug:"ireland",
     population: 4937786
   },
-  {
-    name: "Isle of Man",
-    slug:"isle-of-man",
-    population: 85033
-  },
+  // {
+  //   name: "Isle of Man",
+  //   slug:"isle-of-man",
+  //   population: 85033
+  // },
   {
     name: "Israel",
     slug:"israel",
@@ -554,11 +554,11 @@ const countries = [
     slug:"japan",
     population: 126476461
   },
-  {
-    name: "Jersey",
-    slug:"jersey",
-    population: 97857
-  },
+  // {
+  //   name: "Jersey",
+  //   slug:"jersey",
+  //   population: 97857
+  // },
   {
     name: "Jordan",
     slug:"jordan",
@@ -574,16 +574,16 @@ const countries = [
     slug:"kenya",
     population: 53771296
   },
-  {
-    name: "Kiribati",
-    slug:"kiribati",
-    population: 119449
-  },
-  {
-    name: "Korea (North)",
-    slug:"korea-north",
-    population: 25778816
-  },
+  // {
+  //   name: "Kiribati",
+  //   slug:"kiribati",
+  //   population: 119449
+  // },
+  // {
+  //   name: "Korea (North)",
+  //   slug:"korea-north",
+  //   population: 25778816
+  // },
   {
     name: "Korea (South)",
     slug:"korea-south",
@@ -644,11 +644,11 @@ const countries = [
     slug:"luxembourg",
     population: 625978
   },
-  {
-    name: "Macao, SAR China",
-    slug:"macao-sar-china",
-    population: 649335
-  },
+  // {
+  //   name: "Macao, SAR China",
+  //   slug:"macao-sar-china",
+  //   population: 649335
+  // },
   {
     name: "North Macedonia, Republic of",
     slug:"macedonia",
@@ -689,11 +689,11 @@ const countries = [
     slug:"marshall-islands",
     population: 59190
   },
-  {
-    name: "Martinique",
-    slug:"martinique",
-    population: 375265
-  },
+  // {
+  //   name: "Martinique",
+  //   slug:"martinique",
+  //   population: 375265
+  // },
   {
     name: "Mauritania",
     slug:"mauritania",
@@ -704,21 +704,21 @@ const countries = [
     slug:"mauritius",
     population: 1271768
   },
-  {
-    name: "Mayotte",
-    slug:"mayotte",
-    population: 272815
-  },
+  // {
+  //   name: "Mayotte",
+  //   slug:"mayotte",
+  //   population: 272815
+  // },
   {
     name: "Mexico",
     slug:"mexico",
     population: 128932753
   },
-  {
-    name: "Micronesia, Federated States of",
-    slug:"micronesia",
-    population: 115023
-  },
+  // {
+  //   name: "Micronesia, Federated States of",
+  //   slug:"micronesia",
+  //   population: 115023
+  // },
   {
     name: "Moldova",
     slug:"moldova",
@@ -739,11 +739,11 @@ const countries = [
     slug:"montenegro",
     population: 628066
   },
-  {
-    name: "Montserrat",
-    slug:"montserrat",
-    population: 4992
-  },
+  // {
+  //   name: "Montserrat",
+  //   slug:"montserrat",
+  //   population: 4992
+  // },
   {
     name: "Morocco",
     slug:"morocco",
@@ -764,11 +764,11 @@ const countries = [
     slug:"namibia",
     population: 2540905
   },
-  {
-    name: "Nauru",
-    slug:"nauru",
-    population: 10824
-  },
+  // {
+  //   name: "Nauru",
+  //   slug:"nauru",
+  //   population: 10824
+  // },
   {
     name: "Nepal",
     slug:"nepal",
@@ -779,16 +779,16 @@ const countries = [
     slug:"netherlands",
     population: 17134872
   },
-  {
-    name: "Netherlands Antilles",
-    slug:"netherlands-antilles",
-    population: 26303
-  },
-  {
-    name: "New Caledonia",
-    slug:"new-caledonia",
-    population: 285498
-  },
+  // {
+  //   name: "Netherlands Antilles",
+  //   slug:"netherlands-antilles",
+  //   population: 26303
+  // },
+  // {
+  //   name: "New Caledonia",
+  //   slug:"new-caledonia",
+  //   population: 285498
+  // },
   {
     name: "New Zealand",
     slug:"new-zealand",
@@ -809,21 +809,21 @@ const countries = [
     slug:"nigeria",
     population: 206139589
   },
-  {
-    name: "Niue",
-    slug:"niue",
-    population: 1626
-  },
-  {
-    name: "Norfolk Island",
-    slug:"norfolk-island",
-    population: 1748
-  },
-  {
-    name: "Northern Mariana Islands",
-    slug:"northern-mariana-islands",
-    population: 57559
-  },
+  // {
+  //   name: "Niue",
+  //   slug:"niue",
+  //   population: 1626
+  // },
+  // {
+  //   name: "Norfolk Island",
+  //   slug:"norfolk-island",
+  //   population: 1748
+  // },
+  // {
+  //   name: "Northern Mariana Islands",
+  //   slug:"northern-mariana-islands",
+  //   population: 57559
+  // },
   {
     name: "Norway",
     slug:"norway",
@@ -839,11 +839,11 @@ const countries = [
     slug:"pakistan",
     population: 220892340
   },
-  {
-    name: "Palau",
-    slug:"palau",
-    population: 18094
-  },
+  // {
+  //   name: "Palau",
+  //   slug:"palau",
+  //   population: 18094
+  // },
   {
     name: "Palestinian Territory",
     slug:"palestine",
@@ -874,11 +874,11 @@ const countries = [
     slug:"philippines",
     population: 109581078
   },
-  {
-    name: "Pitcairn",
-    slug:"pitcairn",
-    population: 50
-  },
+  // {
+  //   name: "Pitcairn",
+  //   slug:"pitcairn",
+  //   population: 50
+  // },
   {
     name: "Poland",
     slug:"poland",
@@ -889,11 +889,11 @@ const countries = [
     slug:"portugal",
     population: 10196709
   },
-  {
-    name: "Puerto Rico",
-    slug:"puerto-rico",
-    population: 2860853
-  },
+  // {
+  //   name: "Puerto Rico",
+  //   slug:"puerto-rico",
+  //   population: 2860853
+  // },
   {
     name: "Qatar",
     slug:"qatar",
@@ -919,16 +919,16 @@ const countries = [
     slug:"rwanda",
     population: 12952218
   },
-  {
-    name: "Réunion",
-    slug:"réunion",
-    population: 895312
-  },
-  {
-    name: "Saint Helena",
-    slug:"saint-helena",
-    population: 6077
-  },
+  // {
+  //   name: "Réunion",
+  //   slug:"réunion",
+  //   population: 895312
+  // },
+  // {
+  //   name: "Saint Helena",
+  //   slug:"saint-helena",
+  //   population: 6077
+  // },
   {
     name: "Saint Kitts and Nevis",
     slug:"saint-kitts-and-nevis",
@@ -939,31 +939,31 @@ const countries = [
     slug:"saint-lucia",
     population: 183627
   },
-  {
-    name: "Saint Pierre and Miquelon",
-    slug:"saint-pierre-and-miquelon",
-    population: 5794
-  },
+  // {
+  //   name: "Saint Pierre and Miquelon",
+  //   slug:"saint-pierre-and-miquelon",
+  //   population: 5794
+  // },
   {
     name: "Saint Vincent and Grenadines",
     slug:"saint-vincent-and-the-grenadines",
     population: 110940
   },
-  {
-    name: "Saint-Barthélemy",
-    slug:"saint-barthélemy",
-    population: 9887
-  },
-  {
-    name: "Saint-Martin (French part)",
-    slug:"saint-martin-french-part",
-    population: 38895
-  },
-  {
-    name: "Samoa",
-    slug:"samoa",
-    population: 198414
-  },
+  // {
+  //   name: "Saint-Barthélemy",
+  //   slug:"saint-barthélemy",
+  //   population: 9887
+  // },
+  // {
+  //   name: "Saint-Martin (French part)",
+  //   slug:"saint-martin-french-part",
+  //   population: 38895
+  // },
+  // {
+  //   name: "Samoa",
+  //   slug:"samoa",
+  //   population: 198414
+  // },
   {
     name: "San Marino",
     slug:"san-marino",
@@ -1029,11 +1029,11 @@ const countries = [
     slug:"south-africa",
     population: 59308690
   },
-  {
-    name: "South Georgia and the South Sandwich Islands",
-    slug:"south-georgia-and-the-south-sandwich-islands",
-    population: 30
-  },
+  // {
+  //   name: "South Georgia and the South Sandwich Islands",
+  //   slug:"south-georgia-and-the-south-sandwich-islands",
+  //   population: 30
+  // },
   {
     name: "South Sudan",
     slug:"south-sudan",
@@ -1059,11 +1059,11 @@ const countries = [
     slug:"suriname",
     population: 586632
   },
-  {
-    name: "Svalbard and Jan Mayen Islands",
-    slug:"svalbard-and-jan-mayen-islands",
-    population: 2939
-  },
+  // {
+  //   name: "Svalbard and Jan Mayen Islands",
+  //   slug:"svalbard-and-jan-mayen-islands",
+  //   population: 2939
+  // },
   {
     name: "Swaziland",
     slug:"swaziland",
@@ -1114,16 +1114,16 @@ const countries = [
     slug:"togo",
     population: 8278724
   },
-  {
-    name: "Tokelau",
-    slug:"tokelau",
-    population: 1357
-  },
-  {
-    name: "Tonga",
-    slug:"tonga",
-    population: 105695
-  },
+  // {
+  //   name: "Tokelau",
+  //   slug:"tokelau",
+  //   population: 1357
+  // },
+  // {
+  //   name: "Tonga",
+  //   slug:"tonga",
+  //   population: 105695
+  // },
   {
     name: "Trinidad and Tobago",
     slug:"trinidad-and-tobago",
@@ -1139,26 +1139,26 @@ const countries = [
     slug:"turkey",
     population: 84339067
   },
-  {
-    name: "Turkmenistan",
-    slug:"turkmenistan",
-    population: 6031200
-  },
-  {
-    name: "Turks and Caicos Islands",
-    slug:"turks-and-caicos-islands",
-    population: 40397
-  },
-  {
-    name: "Tuvalu",
-    slug:"tuvalu",
-    population: 11792
-  },
-  {
-    name: "US Minor Outlying Islands",
-    slug:"us-minor-outlying-islands",
-    population: 300
-  },
+  // {
+  //   name: "Turkmenistan",
+  //   slug:"turkmenistan",
+  //   population: 6031200
+  // },
+  // {
+  //   name: "Turks and Caicos Islands",
+  //   slug:"turks-and-caicos-islands",
+  //   population: 40397
+  // },
+  // {
+  //   name: "Tuvalu",
+  //   slug:"tuvalu",
+  //   population: 11792
+  // },
+  // {
+  //   name: "US Minor Outlying Islands",
+  //   slug:"us-minor-outlying-islands",
+  //   population: 300
+  // },
   {
     name: "Uganda",
     slug:"uganda",
@@ -1194,11 +1194,11 @@ const countries = [
     slug:"uzbekistan",
     population: 33469203
   },
-  {
-    name: "Vanuatu",
-    slug:"vanuatu",
-    population: 307145
-  },
+  // {
+  //   name: "Vanuatu",
+  //   slug:"vanuatu",
+  //   population: 307145
+  // },
   {
     name: "Venezuela (Bolivarian Republic)",
     slug:"venezuela",
@@ -1209,16 +1209,16 @@ const countries = [
     slug:"vietnam",
     population: 97338579
   },
-  {
-    name: "Virgin Islands, US",
-    slug:"virgin-islands",
-    population: 104425
-  },
-  {
-    name: "Wallis and Futuna Islands",
-    slug:"wallis-and-futuna-islands",
-    population: 11172
-  },
+  // {
+  //   name: "Virgin Islands, US",
+  //   slug:"virgin-islands",
+  //   population: 104425
+  // },
+  // {
+  //   name: "Wallis and Futuna Islands",
+  //   slug:"wallis-and-futuna-islands",
+  //   population: 11172
+  // },
   {
     name: "Western Sahara",
     slug:"western-sahara",
