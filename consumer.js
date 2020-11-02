@@ -1,5 +1,3 @@
-const isNotProvince = ({Province}) => Province === ''
-
 const getDateOfFirstConfirmedCase = dataPoints => (
   new Date(dataPoints[0].Date)
 )
@@ -11,11 +9,11 @@ const getDateOfLastConfirmedCase = dataPoints => (
 const getDailyDeaths = dataPoints => (
   dataPoints
     .map((dataPoint, dataPointIndex, dataPoints) => {
-      const deathsToday = dataPoint.Deaths
+      const deathsToday = dataPoint.Cases
       if (dataPointIndex === 0) {
         return deathsToday
       }
-      const deathsYesterday = dataPoints[dataPointIndex - 1].Deaths
+      const deathsYesterday = dataPoints[dataPointIndex - 1].Cases
       // Ignore decreasing total deaths
       const correctedDeathsToday = (
         (deathsYesterday > deathsToday)
@@ -44,12 +42,11 @@ const getMovingWeeklyAverageOfDailyDeaths = dataPoints => (
 
 const getCountryData = async slug => {
   const population = countries.find(({slug: slugToFind}) => slug === slugToFind).population
-  const response = await fetch(`https://api.covid19api.com/dayone/country/${slug}`)
+  const response = await fetch(`https://api.covid19api.com/total/dayone/country/${slug}/status/deaths`)
   const dataPoints = await response.json()
-  const relevantDataPoints = dataPoints.filter(isNotProvince)
-  const dateOfFirstConfirmedCase = getDateOfFirstConfirmedCase(relevantDataPoints)
-  const dateOfLastConfirmedCase = getDateOfLastConfirmedCase(relevantDataPoints)
-  const movingWeeklyAverageOfDailyDeaths = getMovingWeeklyAverageOfDailyDeaths(relevantDataPoints)
+  const dateOfFirstConfirmedCase = getDateOfFirstConfirmedCase(dataPoints)
+  const dateOfLastConfirmedCase = getDateOfLastConfirmedCase(dataPoints)
+  const movingWeeklyAverageOfDailyDeaths = getMovingWeeklyAverageOfDailyDeaths(dataPoints)
   const movingWeeklyAverageOfDailyDeathsPerMillion = movingWeeklyAverageOfDailyDeaths.map(
     deaths => deaths * 1000000 / population
   )
