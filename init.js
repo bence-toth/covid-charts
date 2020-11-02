@@ -1,3 +1,18 @@
+function debounce(functionToDebounce, wait) {
+  // From underscore.js
+	let timeout
+	return function() {
+    const context = this
+    const args = arguments
+		const later = () => {
+			timeout = null
+      functionToDebounce.apply(context, args)
+		}
+		clearTimeout(timeout)
+		timeout = setTimeout(later, wait)
+	};
+};
+
 let selectedCountries = ['denmark', 'hungary']
 
 const data = {}
@@ -52,7 +67,9 @@ const init = async () => {
   })
   drawChart({data, selectedCountries})
 
-  // TODO: Redraw chart on window resize (debounce)
+  window.addEventListener('resize', debounce(function() {
+    drawChart({data, selectedCountries})
+  }, 250))
 }
 
 google.charts.load('current', {
