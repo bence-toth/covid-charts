@@ -5,14 +5,14 @@ const data = {}
 const init = async () => {
   // Render sidebar
   const sidebarHtml = countries.map(country => `
-    <div>
+    <label for="${country.slug}">
       <input
         type="checkbox"
         id="${country.slug}"
         ${selectedCountries.includes(country.slug) ? 'checked' : ''}
       />
-      <label for="${country.slug}">${country.name}</label>
-    </div>
+      ${country.name}
+    </label>
   `).join('\n')
   document.querySelector('aside').innerHTML = sidebarHtml;
 

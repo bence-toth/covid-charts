@@ -42,7 +42,7 @@ const drawChart = ({data, selectedCountries}) => {
     },
     chartArea: {
       width: document.getElementById('chart').clientWidth - 90,
-      height: document.getElementById('chart').clientHeight - 150,
+      height: document.getElementById('chart').clientHeight - 100,
       top: 10,
       right: 0
     }

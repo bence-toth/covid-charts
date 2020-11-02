@@ -1,5 +1,5 @@
-/* TODO: Make styles nicer */
 /* TODO: Add dark mode support */
+/* TODO: Add mobile support */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
@@ -24,6 +24,16 @@ aside {
   width: var(--sidebarWidth);
   height: 100%;
   overflow-y: auto;
+}
+
+aside > label {
+  display: block;
+  padding: 10px;
+  cursor: pointer;
+}
+
+aside > label:hover {
+  background-color: hsl(0, 0%, 95%);
 }
 
 main {
