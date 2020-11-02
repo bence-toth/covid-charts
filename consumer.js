@@ -6,23 +6,23 @@ const getDateOfLastConfirmedCase = dataPoints => (
   new Date(dataPoints[dataPoints.length - 1].Date)
 )
 
-const getDailyDeaths = dataPoints => (
-  dataPoints
-    .map((dataPoint, dataPointIndex, dataPoints) => {
-      const deathsToday = dataPoint.Cases
-      if (dataPointIndex === 0) {
-        return deathsToday
-      }
-      const deathsYesterday = dataPoints[dataPointIndex - 1].Cases
-      // Ignore decreasing total deaths
-      const correctedDeathsToday = (
-        (deathsYesterday > deathsToday)
-          ? deathsYesterday
-          : deathsToday
-      )
-      return (correctedDeathsToday - deathsYesterday)
+const getDailyDeaths = dataPoints => {
+  const correctedDataPoints = dataPoints
+    .map(({Cases}) => Cases)
+    .map((_, todayIndex, dataPoints) => {
+      return Math.min(...dataPoints.slice(todayIndex))
     })
-)
+  return (
+    correctedDataPoints
+      .map((deathsToday, todayIndex, dataPoints) => {
+        if (todayIndex === 0) {
+          return deathsToday
+        }
+        const deathsYesterday = dataPoints[todayIndex - 1]
+        return (deathsToday - deathsYesterday)
+      })
+  )
+}
 
 const getMovingWeeklyAverageOfDailyDeaths = dataPoints => (
   getDailyDeaths(dataPoints)
