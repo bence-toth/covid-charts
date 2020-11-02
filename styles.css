@@ -1,6 +1,8 @@
 /* TODO: Make styles nicer */
 /* TODO: Add dark mode support */
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
 html, body {
   height: 100%;
   overflow: hidden;
@@ -10,6 +12,7 @@ html, body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -20,22 +23,22 @@ body {
 aside {
   width: var(--sidebarWidth);
   height: 100%;
-  border: 1px solid red;
   overflow-y: auto;
 }
 
 main {
   width: calc(100% - var(--sidebarWidth));
   height: 100%;
-  border: 1px solid blue;
 }
 
 h1 {
   height: 50px;
-  border: 1px solid green;
+  text-align: center;
+  line-height: 60px;
+  font-size: 24px;
+  font-weight: normal;
 }
 
 #chart {
   height: calc(100% - 50px);
-  border: 1px solid magenta;
 }
