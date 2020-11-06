@@ -1,4 +1,5 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useLayoutEffect, useState} from 'react'
+import debounce from 'lodash.debounce'
 
 import countries from './countries'
 import getCountryData from './consumer'
@@ -6,24 +7,9 @@ import drawChart from './chart'
 
 const google = window.google
 
-function debounce(functionToDebounce, wait) {
-  // From underscore.js
-	let timeout
-	return function() {
-    const context = this
-    const args = arguments
-		const later = () => {
-			timeout = null
-      functionToDebounce.apply(context, args)
-		}
-		clearTimeout(timeout)
-		timeout = setTimeout(later, wait)
-	};
-};
-
 const initialCountries = ['denmark', 'hungary']
 
-function App() {
+const App = () => {
   const [selectedCountries, setSelectedCountries] = useState(initialCountries)
   const [data, setData] = useState({})
 
@@ -45,50 +31,45 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    if (selectedCountries.some(country => !data[country])) {
-      return
+  useLayoutEffect(() => {
+    if (!selectedCountries.some(country => !data[country])) {
+      drawChart({data, selectedCountries})
     }
-    console.log('useEffect', {data, selectedCountries})
-    drawChart({data, selectedCountries})
   }, [data, selectedCountries])
 
   useEffect(() => {
     google.charts.load('current', {
       packages: ['corechart']
     })
-    google.charts.setOnLoadCallback(() => {
-      Promise.all(
-        initialCountries
-          .map(country => getCountryData(country))
-      ).then(initialData => {
-        console.log('setting data in []')
-        setData(
-          initialData
-            .map((data, index) => ({
-              country: initialCountries[index],
-              data
-            }))
-            .reduce((accumulator, current) => ({
-              ...accumulator,
-              [current.country]: current.data
-            }), {})
-        )
-      })
+    google.charts.setOnLoadCallback(async () => {
+      const initialData = await Promise.all(
+        initialCountries.map(country => getCountryData(country))
+      )
+      setData(
+        initialData
+          .map((data, index) => ({
+            country: initialCountries[index],
+            data
+          }))
+          .reduce((accumulator, current) => ({
+            ...accumulator,
+            [current.country]: current.data
+          }), {})
+      )
     })
   }, [])
 
-  useEffect(() => {
-    const listener = window.addEventListener('resize', debounce(() => {
-      if (selectedCountries.some(country => !data[country])) {
-        return
+  useLayoutEffect(() => {
+    const listener = debounce(() => {
+      if (!selectedCountries.some(country => !data[country])) {
+        drawChart({data, selectedCountries})
       }
-      drawChart({data, selectedCountries})
-    }, 250))
+    }, 250)
+    window.addEventListener('resize', listener)
     return () => {
       window.removeEventListener('resize', listener)
     }
-  }, [data, selectedCountries])
+  }, [selectedCountries, data])
 
   return (
     <>
@@ -121,7 +102,7 @@ function App() {
       </main>
       <label htmlFor="countryMenuVisible"></label>
     </>
-  );
+  )
 }
 
-export default App;
+export default App
