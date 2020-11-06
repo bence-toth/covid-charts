@@ -36,7 +36,12 @@ html, body, #root {
 aside {
   width: var(--sidebarWidth);
   height: 100%;
+}
+
+aside .countries {
+  height: calc(100% - 50px);
   overflow-y: auto;
+  user-select: none;
 }
 
 aside input[type=search] {
@@ -46,20 +51,21 @@ aside input[type=search] {
   border: 0;
   border-bottom: 1px solid gray;
   font-size: inherit;
+  height: 50px;
 }
 
-aside > label {
+aside label {
   display: block;
   padding: 10px;
   cursor: pointer;
 }
 
-aside > label > input {
-  margin-right: 10px;
+aside label:hover {
+  background-color: hsl(0, 0%, 95%);
 }
 
-aside > label:hover {
-  background-color: hsl(0, 0%, 95%);
+aside label > input {
+  margin-right: 10px;
 }
 
 main {
@@ -75,6 +81,7 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
+  border-bottom: 1px solid gray;
 }
 
 h1 br {
@@ -117,7 +124,6 @@ h1 br {
 
   aside input[type=search] {
     padding-right: 60px;
-    height: 50px;
   }
 
   main {

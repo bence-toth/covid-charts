@@ -92,33 +92,35 @@ const App = () => {
           }}
           placeholder='Search for country...'
         />
-        {countries
-          .filter(country => {
-            if (actualCountryFilter.length === 0) {
-              return true
-            }
-            if (selectedCountries.includes(country.slug)) {
-              return true
-            }
-            return country.name.toLowerCase().includes(actualCountryFilter)
-          })
-          .map(country =>
-            <label
-              key={country.slug}
-              htmlFor={country.slug}
-            >
-              <input
-                type="checkbox"
-                id={country.slug}
-                checked={selectedCountries.includes(country.slug)}
-                onChange={() => {
-                  toggleCountry(country.slug)
-                }}
-              />
-              {country.name}
-            </label>
-          )
-        }
+        <div className='countries'>
+          {countries
+            .filter(country => {
+              if (actualCountryFilter.length === 0) {
+                return true
+              }
+              if (selectedCountries.includes(country.slug)) {
+                return true
+              }
+              return country.name.toLowerCase().includes(actualCountryFilter)
+            })
+            .map(country =>
+              <label
+                key={country.slug}
+                htmlFor={country.slug}
+              >
+                <input
+                  type="checkbox"
+                  id={country.slug}
+                  checked={selectedCountries.includes(country.slug)}
+                  onChange={() => {
+                    toggleCountry(country.slug)
+                  }}
+                />
+                {country.name}
+              </label>
+            )
+          }
+        </div>
       </aside>
       <main>
         <h1>
