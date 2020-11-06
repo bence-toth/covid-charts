@@ -1,3 +1,7 @@
+import countries from './countries'
+
+const google = window.google
+
 const drawChart = ({data, selectedCountries}) => {
   const displayedCountries = selectedCountries.map(country => ({
     slug: country,
@@ -52,3 +56,5 @@ const drawChart = ({data, selectedCountries}) => {
 
   chart.draw(chartData, options)
 }
+
+export default drawChart

@@ -1240,3 +1240,5 @@ const countries = [
     population: 14862924
   }
 ]
+
+export default countries
