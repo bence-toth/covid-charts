@@ -68,7 +68,7 @@ label[for=countryMenuVisible] {
 
 @media (max-width: 1200px) {
   h1 {
-    font-size: clamp(0px, 2.5vw, 20px);
+    font-size: clamp(14px, 2.75vw, 20px);
     line-height: 1.1;
   }
 
@@ -112,5 +112,12 @@ label[for=countryMenuVisible] {
 
   #countryMenuVisible:checked ~ label[for=countryMenuVisible]:before {
     content: '❌'
+  }
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-weight: bold;
+    line-height: 1.35;
   }
 }
