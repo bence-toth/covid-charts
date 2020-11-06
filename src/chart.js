@@ -41,15 +41,26 @@ const drawChart = ({data, selectedCountries}) => {
   ])
 
   const options = {
-    legend: {
-      position: 'bottom'
-    },
+    fontName: 'Poppins',
     chartArea: {
-      width: document.getElementById('chart').clientWidth - 90,
-      height: document.getElementById('chart').clientHeight - 100,
-      top: 10,
-      right: 0
-    }
+      width: document.getElementById('chart').clientWidth,
+      height: document.getElementById('chart').clientHeight - 50,
+      top: 0,
+      right: 0,
+    },
+    tooltip: {
+      trigger: 'selection'
+    },
+    crosshair: {
+      trigger: 'both',
+      orientation: 'vertical'
+    },
+    hAxis: {
+      format: 'yyyy-MM-dd',
+      viewWindowMode: 'pretty',
+      textPosition: 'out'
+    },
+    theme: 'maximized'
   }
 
   const chart = new google.visualization.LineChart(document.getElementById('chart'))
