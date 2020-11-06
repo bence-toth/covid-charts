@@ -30,6 +30,10 @@ aside > label {
   cursor: pointer;
 }
 
+aside > label > input {
+  margin-right: 10px;
+}
+
 aside > label:hover {
   background-color: hsl(0, 0%, 95%);
 }
