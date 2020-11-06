@@ -115,6 +115,11 @@ h1 br {
     z-index: 1;
   }
 
+  aside input[type=search] {
+    padding-right: 60px;
+    height: 50px;
+  }
+
   main {
     width: 100%;
   }
