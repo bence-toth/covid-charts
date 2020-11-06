@@ -88,10 +88,6 @@ label[for=countryMenuVisible] {
     width: 100%;
   }
 
-  #chart {
-    margin-right: 50px;
-  }
-
   label[for=countryMenuVisible] {
     display: block;
     position: absolute;
