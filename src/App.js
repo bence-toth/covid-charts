@@ -1,3 +1,5 @@
+import {useEffect, useState} from 'react'
+
 import countries from './countries'
 import getCountryData from './consumer'
 import drawChart from './chart'
@@ -19,75 +21,96 @@ function debounce(functionToDebounce, wait) {
 	};
 };
 
-let selectedCountries = ['denmark', 'hungary']
-
-const data = {}
-
-const init = async () => {
-  // Render sidebar
-  const sidebarHtml = countries.map(country => `
-    <label for="${country.slug}">
-      <input
-        type="checkbox"
-        id="${country.slug}"
-        ${selectedCountries.includes(country.slug) ? 'checked' : ''}
-      />
-      ${country.name}
-    </label>
-  `).join('\n')
-  document.querySelector('aside').innerHTML = sidebarHtml;
-
-  // Handle checkbox check/uncheck
-  [...document.querySelectorAll('input[type=checkbox]:not(#countryMenuVisible)')].forEach(
-    checkbox => {
-      checkbox.addEventListener('click', async event => {
-        const selectedCountry = event.target.id
-        if (selectedCountries.includes(selectedCountry)) {
-          if (selectedCountries.length <= 1) {
-            event.preventDefault()
-          }
-          else {
-            selectedCountries = selectedCountries.filter(slug => slug !== selectedCountry)
-            drawChart({data, selectedCountries})
-          }
-        }
-        else {
-          selectedCountries.push(selectedCountry)
-          if (!data[selectedCountry]) {
-            const newData = await getCountryData(selectedCountry)
-            data[selectedCountry] = newData
-          }
-          drawChart({data, selectedCountries})
-        }
-      })
-    }
-  )
-
-  // Load and show initial data
-  const initialData = await Promise.all(
-    selectedCountries.map(country => getCountryData(country))
-  )
-  selectedCountries.forEach((country, countryIndex) => {
-    data[country] = initialData[countryIndex]
-  })
-  drawChart({data, selectedCountries})
-
-  window.addEventListener('resize', debounce(function() {
-    drawChart({data, selectedCountries})
-  }, 250))
-}
-
-google.charts.load('current', {
-  packages: ['corechart']
-})
-
-google.charts.setOnLoadCallback(init)
+const initialCountries = ['denmark', 'hungary']
 
 function App() {
+  const [selectedCountries, setSelectedCountries] = useState(initialCountries)
+  const [data, setData] = useState({})
+
+  const toggleCountry = async selectedCountry => {
+    if (selectedCountries.includes(selectedCountry)) {
+      if (selectedCountries.length > 1) {
+        setSelectedCountries(selectedCountries.filter(slug => slug !== selectedCountry))
+      }
+    }
+    else {
+      setSelectedCountries([...selectedCountries, selectedCountry])
+      if (!data[selectedCountry]) {
+        const newData = await getCountryData(selectedCountry)
+        setData({
+          ...data,
+          [selectedCountry]: newData
+        })
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (selectedCountries.some(country => !data[country])) {
+      return
+    }
+    console.log('useEffect', {data, selectedCountries})
+    drawChart({data, selectedCountries})
+  }, [data, selectedCountries])
+
+  useEffect(() => {
+    google.charts.load('current', {
+      packages: ['corechart']
+    })
+    google.charts.setOnLoadCallback(() => {
+      Promise.all(
+        initialCountries
+          .map(country => getCountryData(country))
+      ).then(initialData => {
+        console.log('setting data in []')
+        setData(
+          initialData
+            .map((data, index) => ({
+              country: initialCountries[index],
+              data
+            }))
+            .reduce((accumulator, current) => ({
+              ...accumulator,
+              [current.country]: current.data
+            }), {})
+        )
+      })
+    })
+  }, [])
+
+  useEffect(() => {
+    const listener = window.addEventListener('resize', debounce(() => {
+      if (selectedCountries.some(country => !data[country])) {
+        return
+      }
+      drawChart({data, selectedCountries})
+    }, 250))
+    return () => {
+      window.removeEventListener('resize', listener)
+    }
+  }, [data, selectedCountries])
+
   return (
     <>
       <input type="checkbox" id="countryMenuVisible" />
-      <aside></aside>
+      <aside>
+        {countries.map(country =>
+          <label
+            key={country.slug}
+            htmlFor={country.slug}
+          >
+            <input
+              type="checkbox"
+              id={country.slug}
+              checked={selectedCountries.includes(country.slug)}
+              onChange={() => {
+                toggleCountry(country.slug)
+              }}
+            />
+            {country.name}
+          </label>
+        )}
+      </aside>
       <main>
         <h1>
           <div>
