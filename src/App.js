@@ -80,12 +80,7 @@ const App = () => {
 
   return (
     <>
-      <input
-        type="checkbox"
-        id="countryMenuVisible"
-        checked={isHamburgerMenuOpen}
-      />
-      <aside>
+      <aside className={isHamburgerMenuOpen ? 'open' : ''}>
         {countries.map(country =>
           <label
             key={country.slug}

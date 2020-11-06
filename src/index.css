@@ -1,5 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
+/* Nice scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: hsl(0, 0%, 97.5%);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: hsl(0, 0%, 70%);
+}
+
 html, body, #root {
   width: 100%;
   height: 100%;
@@ -79,7 +94,7 @@ h1 br {
     display: initial;
   }
 
-  #countryMenuVisible:checked + aside {
+  aside.open {
     transform: none;
   }
 
