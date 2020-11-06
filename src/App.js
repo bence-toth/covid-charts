@@ -5,6 +5,8 @@ import countries from './countries'
 import getCountryData from './consumer'
 import drawChart from './chart'
 
+import HamburgerMenu from 'react-hamburger-menu'
+
 const google = window.google
 
 const initialCountries = ['denmark', 'hungary']
@@ -12,6 +14,11 @@ const initialCountries = ['denmark', 'hungary']
 const App = () => {
   const [selectedCountries, setSelectedCountries] = useState(initialCountries)
   const [data, setData] = useState({})
+  const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false)
+
+  const toggleHamburgerMenu = () => {
+    setIsHamburgerMenuOpen(!isHamburgerMenuOpen)
+  }
 
   const toggleCountry = async selectedCountry => {
     if (selectedCountries.includes(selectedCountry)) {
@@ -73,7 +80,11 @@ const App = () => {
 
   return (
     <>
-      <input type="checkbox" id="countryMenuVisible" />
+      <input
+        type="checkbox"
+        id="countryMenuVisible"
+        checked={isHamburgerMenuOpen}
+      />
       <aside>
         {countries.map(country =>
           <label
@@ -100,7 +111,17 @@ const App = () => {
         </h1>
         <div id='chart'></div>
       </main>
-      <label htmlFor="countryMenuVisible"></label>
+      <div className='hamburgerWrapper'>
+        <HamburgerMenu
+          isOpen={isHamburgerMenuOpen}
+          menuClicked={toggleHamburgerMenu}
+          strokeWidth={3}
+          color='black'
+          animationDuration={0.25}
+          width={30}
+          height={30}
+        />
+      </div>
     </>
   )
 }

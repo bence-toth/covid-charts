@@ -61,8 +61,11 @@ h1 br {
   height: calc(100% - 50px);
 }
 
-#countryMenuVisible,
-label[for=countryMenuVisible] {
+#countryMenuVisible {
+  display: none;
+}
+
+.hamburgerWrapper {
   display: none;
 }
 
@@ -106,12 +109,13 @@ label[for=countryMenuVisible] {
     justify-content: center;
   }
 
-  label[for=countryMenuVisible]:before {
-    content: '☰'
-  }
-
-  #countryMenuVisible:checked ~ label[for=countryMenuVisible]:before {
-    content: '❌'
+  .hamburgerWrapper {
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    cursor: pointer;
   }
 }
 
