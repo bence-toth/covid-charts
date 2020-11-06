@@ -15,6 +15,7 @@ const App = () => {
   const [selectedCountries, setSelectedCountries] = useState(initialCountries)
   const [data, setData] = useState({})
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false)
+  const [countryFilter, setCountryFilter] = useState('')
 
   const toggleHamburgerMenu = () => {
     setIsHamburgerMenuOpen(!isHamburgerMenuOpen)
@@ -78,25 +79,46 @@ const App = () => {
     }
   }, [selectedCountries, data])
 
+  const actualCountryFilter = countryFilter.trim().toLowerCase()
+
   return (
     <>
       <aside className={isHamburgerMenuOpen ? 'open' : ''}>
-        {countries.map(country =>
-          <label
-            key={country.slug}
-            htmlFor={country.slug}
-          >
-            <input
-              type="checkbox"
-              id={country.slug}
-              checked={selectedCountries.includes(country.slug)}
-              onChange={() => {
-                toggleCountry(country.slug)
-              }}
-            />
-            {country.name}
-          </label>
-        )}
+        <input
+          type='search'
+          value={countryFilter}
+          onChange={(event) => {
+            setCountryFilter(event.target.value)
+          }}
+          placeholder='Search for country...'
+        />
+        {countries
+          .filter(country => {
+            if (actualCountryFilter.length === 0) {
+              return true
+            }
+            if (selectedCountries.includes(country.slug)) {
+              return true
+            }
+            return country.name.toLowerCase().includes(actualCountryFilter)
+          })
+          .map(country =>
+            <label
+              key={country.slug}
+              htmlFor={country.slug}
+            >
+              <input
+                type="checkbox"
+                id={country.slug}
+                checked={selectedCountries.includes(country.slug)}
+                onChange={() => {
+                  toggleCountry(country.slug)
+                }}
+              />
+              {country.name}
+            </label>
+          )
+        }
       </aside>
       <main>
         <h1>

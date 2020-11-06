@@ -39,6 +39,15 @@ aside {
   overflow-y: auto;
 }
 
+aside input[type=search] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 0;
+  border-bottom: 1px solid gray;
+  font-size: inherit;
+}
+
 aside > label {
   display: block;
   padding: 10px;
