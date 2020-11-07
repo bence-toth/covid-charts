@@ -1,3 +1,5 @@
+import countries from './countries'
+
 const getDateOfFirstConfirmedCase = dataPoints => (
   new Date(dataPoints[0].Date)
 )
@@ -56,3 +58,5 @@ const getCountryData = async slug => {
     movingWeeklyAverageOfDailyDeathsPerMillion
   }
 }
+
+export default getCountryData

@@ -480,7 +480,7 @@ const countries = [
   //   population: 1
   // },
   {
-    name: "Holy See (Vatican City State)",
+    name: "Holy See (Vatican)",
     slug:"holy-see-vatican-city-state",
     population: 801
   },
@@ -515,7 +515,7 @@ const countries = [
     population: 273523615
   },
   {
-    name: "Iran, Islamic Republic of",
+    name: "Iran",
     slug:"iran",
     population: 83992949
   },
@@ -650,7 +650,7 @@ const countries = [
   //   population: 649335
   // },
   {
-    name: "North Macedonia, Republic of",
+    name: "North Macedonia",
     slug:"macedonia",
     population: 2083374
   },
@@ -1080,12 +1080,12 @@ const countries = [
     population: 8654622
   },
   {
-    name: "Syrian Arab Republic (Syria)",
+    name: "Syria",
     slug:"syria",
     population: 17500658
   },
   {
-    name: "Taiwan, Republic of China",
+    name: "Taiwan",
     slug:"taiwan",
     population: 23816775
   },
@@ -1095,7 +1095,7 @@ const countries = [
     population: 9537645
   },
   {
-    name: "Tanzania, United Republic of",
+    name: "Tanzania",
     slug:"tanzania",
     population: 59734218
   },
@@ -1200,7 +1200,7 @@ const countries = [
   //   population: 307145
   // },
   {
-    name: "Venezuela (Bolivarian Republic)",
+    name: "Venezuela",
     slug:"venezuela",
     population: 28435940
   },
@@ -1240,3 +1240,5 @@ const countries = [
     population: 14862924
   }
 ]
+
+export default countries
