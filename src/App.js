@@ -11,15 +11,13 @@ import HamburgerMenu from 'react-hamburger-menu'
 
 const google = window.google
 
-const initialCountries = ['denmark']
-
 const getCountrySlug = coords => {
   const code = countryIso.get(coords.latitude, coords.longitude)
   return countryData.countries[code].name
 }
 
 const App = () => {
-  const [selectedCountries, setSelectedCountries] = useState(initialCountries)
+  const [selectedCountries, setSelectedCountries] = useState([])
   const [data, setData] = useState({})
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false)
   const [countryFilter, setCountryFilter] = useState('')
@@ -47,8 +45,10 @@ const App = () => {
   }
 
   useLayoutEffect(() => {
-    if (!selectedCountries.some(country => !data[country])) {
-      drawChart({data, selectedCountries})
+    if (google.visualization) {
+      if (!selectedCountries.some(country => !data[country])) {
+        drawChart({data, selectedCountries})
+      }
     }
   }, [data, selectedCountries])
 
@@ -60,21 +60,12 @@ const App = () => {
       navigator.geolocation.getCurrentPosition(async ({coords}) => {
         const slug = getCountrySlug(coords).toLowerCase()
         google.charts.setOnLoadCallback(async () => {
-          const initialData = await Promise.all(
-            [...initialCountries, slug].map(country => getCountryData(country))
-          )
-          setSelectedCountries([...initialCountries, slug])
-          setData(
-            initialData
-              .map((data, index) => ({
-                country: initialCountries[index] || slug,
-                data
-              }))
-              .reduce((accumulator, current) => ({
-                ...accumulator,
-                [current.country]: current.data
-              }), {})
-          )
+          const localData = await getCountryData(slug)
+          // const worldwideData = await getWorldwideData()
+          setSelectedCountries([slug])
+          setData({
+            [slug]: localData
+          })
         })
       })
     }
