@@ -1,5 +1,7 @@
 import {useEffect, useLayoutEffect, useState} from 'react'
 import debounce from 'lodash.debounce'
+import countryIso from 'country-iso'
+import countryData from 'country-data'
 
 import countries from './countries'
 import getCountryData from './consumer'
@@ -9,7 +11,12 @@ import HamburgerMenu from 'react-hamburger-menu'
 
 const google = window.google
 
-const initialCountries = ['denmark', 'hungary']
+const initialCountries = ['denmark']
+
+const getCountrySlug = coords => {
+  const code = countryIso.get(coords.latitude, coords.longitude)
+  return countryData.countries[code].name
+}
 
 const App = () => {
   const [selectedCountries, setSelectedCountries] = useState(initialCountries)
@@ -49,22 +56,28 @@ const App = () => {
     google.charts.load('current', {
       packages: ['corechart']
     })
-    google.charts.setOnLoadCallback(async () => {
-      const initialData = await Promise.all(
-        initialCountries.map(country => getCountryData(country))
-      )
-      setData(
-        initialData
-          .map((data, index) => ({
-            country: initialCountries[index],
-            data
-          }))
-          .reduce((accumulator, current) => ({
-            ...accumulator,
-            [current.country]: current.data
-          }), {})
-      )
-    })
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async ({coords}) => {
+        const slug = getCountrySlug(coords).toLowerCase()
+        google.charts.setOnLoadCallback(async () => {
+          const initialData = await Promise.all(
+            [...initialCountries, slug].map(country => getCountryData(country))
+          )
+          setSelectedCountries([...initialCountries, slug])
+          setData(
+            initialData
+              .map((data, index) => ({
+                country: initialCountries[index] || slug,
+                data
+              }))
+              .reduce((accumulator, current) => ({
+                ...accumulator,
+                [current.country]: current.data
+              }), {})
+          )
+        })
+      })
+    }
   }, [])
 
   useLayoutEffect(() => {
