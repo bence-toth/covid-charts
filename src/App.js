@@ -8,6 +8,8 @@ import getCountryData from './consumer'
 import drawChart from './chart'
 
 import HamburgerMenu from 'react-hamburger-menu'
+import Loader from 'react-loader-spinner'
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
 const google = window.google
 
@@ -17,6 +19,7 @@ const getCountrySlug = coords => {
 }
 
 const App = () => {
+  const [initialDataLoaded, setInitialDataLoaded] = useState(false)
   const [selectedCountries, setSelectedCountries] = useState([])
   const [data, setData] = useState({})
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false)
@@ -61,11 +64,9 @@ const App = () => {
         const slug = getCountrySlug(coords).toLowerCase()
         google.charts.setOnLoadCallback(async () => {
           const localData = await getCountryData(slug)
-          // const worldwideData = await getWorldwideData()
+          setInitialDataLoaded(true)
           setSelectedCountries([slug])
-          setData({
-            [slug]: localData
-          })
+          setData({ [slug]: localData })
         })
       })
     }
@@ -132,7 +133,22 @@ const App = () => {
             7-day moving average of COVID-19 <br />deaths per million people
           </div>
         </h1>
-        <div id='chart'></div>
+        {
+          initialDataLoaded
+          ? (
+            <div id='chart'></div>
+          )
+          : (
+            <div className="spinnerWrapper">
+              <Loader
+                type="Puff"
+                color="#00BFFF"
+                height={100}
+                width={100}
+              />
+            </div>
+          )
+        }
       </main>
       <div className='hamburgerWrapper'>
         <HamburgerMenu

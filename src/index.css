@@ -100,6 +100,13 @@ h1 br {
   display: none;
 }
 
+.spinnerWrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (max-width: 1200px) {
   h1 {
     font-size: clamp(14px, 2.75vw, 20px);
