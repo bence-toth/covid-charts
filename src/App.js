@@ -1,25 +1,17 @@
-import {useEffect, useLayoutEffect, useState} from 'react'
-import debounce from 'lodash.debounce'
-import countryIso from 'country-iso'
-import countryData from 'country-data'
+import {useState} from 'react'
 
 import countries from './countries'
 import getCountryData from './consumer'
-import drawChart from './chart'
+import geolocationStates from './geolocationStates'
+import {useOnStartUp, useChartUpdate, useResizeListener} from './hooks'
 
 import HamburgerMenu from 'react-hamburger-menu'
-import Loader from 'react-loader-spinner'
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import Fallback from './Fallback'
 
-const google = window.google
-
-const getCountrySlug = coords => {
-  const code = countryIso.get(coords.latitude, coords.longitude)
-  return countryData.countries[code].name
-}
+const fallbackCountry = 'denmark'
 
 const App = () => {
-  const [initialDataLoaded, setInitialDataLoaded] = useState(false)
+  const [geolocationState, setGeolocationState] = useState(geolocationStates.requested)
   const [selectedCountries, setSelectedCountries] = useState([])
   const [data, setData] = useState({})
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false)
@@ -47,43 +39,15 @@ const App = () => {
     }
   }
 
-  useLayoutEffect(() => {
-    if (google.visualization) {
-      if (!selectedCountries.some(country => !data[country])) {
-        drawChart({data, selectedCountries})
-      }
-    }
-  }, [data, selectedCountries])
-
-  useEffect(() => {
-    google.charts.load('current', {
-      packages: ['corechart']
-    })
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async ({coords}) => {
-        const slug = getCountrySlug(coords).toLowerCase()
-        google.charts.setOnLoadCallback(async () => {
-          const localData = await getCountryData(slug)
-          setInitialDataLoaded(true)
-          setSelectedCountries([slug])
-          setData({ [slug]: localData })
-        })
-      })
-    }
-  }, [])
-
-  useLayoutEffect(() => {
-    const listener = debounce(() => {
-      if (!selectedCountries.some(country => !data[country])) {
-        drawChart({data, selectedCountries})
-      }
-    }, 250)
-    window.addEventListener('resize', listener)
-    return () => {
-      window.removeEventListener('resize', listener)
-    }
-  }, [selectedCountries, data])
-
+  useOnStartUp({
+    fallbackCountry,
+    setGeolocationState,
+    setSelectedCountries,
+    setData
+  })
+  useChartUpdate({data, selectedCountries})
+  useResizeListener({data, selectedCountries})
+  
   const actualCountryFilter = countryFilter.trim().toLowerCase()
 
   return (
@@ -134,19 +98,12 @@ const App = () => {
           </div>
         </h1>
         {
-          initialDataLoaded
+          [geolocationStates.loaded, geolocationStates.disallowed].includes(geolocationState)
           ? (
             <div id='chart'></div>
           )
           : (
-            <div className="spinnerWrapper">
-              <Loader
-                type="Puff"
-                color="#00BFFF"
-                height={100}
-                width={100}
-              />
-            </div>
+            <Fallback geolocationState={geolocationState} />
           )
         }
       </main>
