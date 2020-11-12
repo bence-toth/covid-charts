@@ -98,7 +98,7 @@ const App = () => {
           </div>
         </h1>
         {
-          [geolocationStates.loaded, geolocationStates.disallowed].includes(geolocationState)
+          (geolocationState === geolocationStates.loaded)
           ? (
             <div id='chart'></div>
           )

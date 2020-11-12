@@ -1,9 +1,9 @@
-const geolocationStates = {
+const geolocationStates = Object.freeze({
     requested: 'requested',
     failed: 'failed',
-    disallowed: 'disallowed',
+    loadingFallback: 'loadingFallback',
     loading: 'loading',
     loaded: 'loaded'
-}
+})
 
 export default geolocationStates

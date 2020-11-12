@@ -16,7 +16,6 @@ const getCountrySlug = coords => {
 
 const setUpGeolocation = async ({coords, setGeolocationState, setSelectedCountries, setData}) => {
   const slug = getCountrySlug(coords).toLowerCase()
-  console.log(slug)
   setGeolocationState(geolocationStates.loading)
   google.charts.setOnLoadCallback(async () => {
     const localData = await getCountryData(slug)
@@ -27,13 +26,15 @@ const setUpGeolocation = async ({coords, setGeolocationState, setSelectedCountri
 }
 
 const handleGeoError = async ({code, fallbackCountry, setGeolocationState, setSelectedCountries, setData}) => {
+  const disallowedByUser = code === 1
   setGeolocationState(
-    code === 1
-      ? geolocationStates.disallowed
+    disallowedByUser
+      ? geolocationStates.loadingFallback
       : geolocationStates.failed
   )
-  if (code === 1) {
+  if (disallowedByUser) {
     const fallbackData = await getCountryData(fallbackCountry)
+    setGeolocationState(geolocationStates.loaded)
     setSelectedCountries([fallbackCountry])
     setData({ [fallbackCountry]: fallbackData })
   }

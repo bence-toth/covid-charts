@@ -100,11 +100,41 @@ h1 br {
   display: none;
 }
 
-.spinnerWrapper {
+.fallbackWrapper {
   display: flex;
   height: 100%;
   align-items: center;
   justify-content: center;
+  text-align: center;
+}
+
+.spinner-success {
+  color: #28a745;
+}
+
+.spinner-warning {
+  color: #ffc107;
+}
+
+.spinner-danger {
+  color: #dc3545;
+}
+
+@keyframes spinner-border {
+  to { transform: rotate(360deg); }
+}
+
+.spinner-border {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: text-bottom;
+  border: .25em solid currentColor;
+      border-right-color: currentcolor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  -webkit-animation: spinner-border .75s linear infinite;
+  animation: spinner-border .75s linear infinite;
 }
 
 @media (max-width: 1200px) {
