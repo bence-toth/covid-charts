@@ -50,10 +50,10 @@ const useChartUpdate = ({data, selectedCountries}) => {
   }, [data, selectedCountries])
 }
 
-const useResizeListener = ({data, selectedCountries}) => {
+const useResizeListener = ({data, selectedCountries, geolocationState}) => {
   useLayoutEffect(() => {
     const listener = debounce(() => {
-      if (!selectedCountries.some(country => !data[country])) {
+      if (!selectedCountries.some(country => !data[country]) && geolocationState === geolocationStates.loaded) {
         drawChart({data, selectedCountries})
       }
     }, 250)
@@ -61,7 +61,7 @@ const useResizeListener = ({data, selectedCountries}) => {
     return () => {
       window.removeEventListener('resize', listener)
     }
-  }, [selectedCountries, data])
+  }, [selectedCountries, data, geolocationState])
 }
 
 const useOnStartUp = ({fallbackCountry, setGeolocationState, setSelectedCountries, setData}) => {
