@@ -130,7 +130,7 @@ h1 br {
   height: 2rem;
   vertical-align: text-bottom;
   border: .25em solid currentColor;
-      border-right-color: currentcolor;
+  border-right-color: currentcolor;
   border-right-color: transparent;
   border-radius: 50%;
   -webkit-animation: spinner-border .75s linear infinite;
