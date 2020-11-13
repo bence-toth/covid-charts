@@ -133,7 +133,6 @@ h1 br {
   border-right-color: currentcolor;
   border-right-color: transparent;
   border-radius: 50%;
-  -webkit-animation: spinner-border .75s linear infinite;
   animation: spinner-border .75s linear infinite;
 }
 
