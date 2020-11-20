@@ -33,10 +33,12 @@ const handleGeoError = async ({code, fallbackCountry, setGeolocationState, setSe
       : geolocationStates.failed
   )
   if (disallowedByUser) {
-    const fallbackData = await getCountryData(fallbackCountry)
-    setGeolocationState(geolocationStates.loaded)
-    setSelectedCountries([fallbackCountry])
-    setData({ [fallbackCountry]: fallbackData })
+    google.charts.setOnLoadCallback(async () => {
+      const fallbackData = await getCountryData(fallbackCountry)
+      setGeolocationState(geolocationStates.loaded)
+      setSelectedCountries([fallbackCountry])
+      setData({ [fallbackCountry]: fallbackData })
+    })
   }
 }
 
