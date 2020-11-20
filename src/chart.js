@@ -40,32 +40,36 @@ const drawChart = ({data, selectedCountries}) => {
     ]))
   ])
 
-  const options = {
-    fontName: 'Poppins',
-    chartArea: {
-      width: document.getElementById('chart').clientWidth,
-      height: document.getElementById('chart').clientHeight - 50,
-      top: 0,
-      right: 0,
-    },
-    tooltip: {
-      trigger: 'selection'
-    },
-    crosshair: {
-      trigger: 'both',
-      orientation: 'vertical'
-    },
-    hAxis: {
-      format: 'yyyy-MM-dd',
-      viewWindowMode: 'pretty',
-      textPosition: 'out'
-    },
-    theme: 'maximized'
+  const chartElement = document.getElementById('chart')
+
+  if (chartElement) {
+    const chart = new google.visualization.LineChart(chartElement)
+
+    const options = {
+      fontName: 'Poppins',
+      chartArea: {
+        width: chartElement.clientWidth,
+        height: chartElement.clientHeight - 50,
+        top: 0,
+        right: 0,
+      },
+      tooltip: {
+        trigger: 'selection'
+      },
+      crosshair: {
+        trigger: 'both',
+        orientation: 'vertical'
+      },
+      hAxis: {
+        format: 'yyyy-MM-dd',
+        viewWindowMode: 'pretty',
+        textPosition: 'out'
+      },
+      theme: 'maximized'
+    }
+
+    chart.draw(chartData, options)
   }
-
-  const chart = new google.visualization.LineChart(document.getElementById('chart'))
-
-  chart.draw(chartData, options)
 }
 
 export default drawChart
