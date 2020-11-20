@@ -3,7 +3,7 @@ import {useState} from 'react'
 import countries from './countries'
 import getCountryData from './consumer'
 import geolocationStates from './geolocationStates'
-import {useOnStartUp, useChartUpdate, useResizeListener} from './hooks'
+import {useGoogleCharts, useGeolocation, useChartUpdate, useResizeListener} from './hooks'
 
 import HamburgerMenu from 'react-hamburger-menu'
 import Fallback from './Fallback'
@@ -39,7 +39,8 @@ const App = () => {
     }
   }
 
-  useOnStartUp({
+  useGoogleCharts()
+  useGeolocation({
     fallbackCountry,
     setGeolocationState,
     setSelectedCountries,

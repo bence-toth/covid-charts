@@ -66,12 +66,8 @@ const useResizeListener = ({data, selectedCountries, geolocationState}) => {
   }, [selectedCountries, data, geolocationState])
 }
 
-const useOnStartUp = ({fallbackCountry, setGeolocationState, setSelectedCountries, setData}) => {
+const useGeolocation = ({fallbackCountry, setGeolocationState, setSelectedCountries, setData}) => {
   useEffect(() => {
-    google.charts.load('current', {
-      packages: ['corechart']
-    })
-  
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         ({coords}) => setUpGeolocation({coords, setGeolocationState, setSelectedCountries, setData}),
@@ -82,8 +78,17 @@ const useOnStartUp = ({fallbackCountry, setGeolocationState, setSelectedCountrie
   }, [])
 }
 
+const useGoogleCharts = () => {
+  useEffect(() => {
+    google.charts.load('current', {
+      packages: ['corechart']
+    })
+  }, [])
+}
+
 export {
   useChartUpdate,
   useResizeListener,
-  useOnStartUp
+  useGeolocation,
+  useGoogleCharts
 }
