@@ -1,7 +1,7 @@
 import {useState} from 'react'
 
 import countries from './countries'
-import getCountryData from './consumer'
+import {getCovidData} from './consumer'
 import geolocationStates from './geolocationStates'
 import {useGoogleCharts, useGeolocation, useChartUpdate, useResizeListener} from './hooks'
 
@@ -30,7 +30,7 @@ const App = () => {
     else {
       setSelectedCountries([...selectedCountries, selectedCountry])
       if (!data[selectedCountry]) {
-        const newData = await getCountryData(selectedCountry)
+        const newData = await getCovidData(selectedCountry)
         setData({
           ...data,
           [selectedCountry]: newData
