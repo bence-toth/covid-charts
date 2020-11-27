@@ -26,7 +26,15 @@ const App = () => {
   useGeolocation({addCountryToStore, setGeolocationState})
   useChartUpdate({data, selectedCountries})
   useResizeListener({data, selectedCountries, geolocationState})
-  useGoogleChartSetUp({countries: storedCountries, geolocationState, setGeolocationState, setSelectedCountries, setData})
+  useGoogleChartSetUp({
+    countries: storedCountries.length > 0
+      ? storedCountries
+      : [fallbackCountry],
+    geolocationState,
+    setGeolocationState,
+    setSelectedCountries,
+    setData
+  })
 
   const toggleHamburgerMenu = () => {
     setIsHamburgerMenuOpen(!isHamburgerMenuOpen)
