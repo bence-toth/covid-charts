@@ -5,6 +5,8 @@ import drawChart from './chart'
 import {getCovidData, getCountryName} from './consumer'
 import geolocationStates from './geolocationStates'
 
+import countries from './countries'
+
 const google = window.google
 const localStorage = window.localStorage
 
@@ -70,8 +72,9 @@ const useGeolocation = ({addCountryToSelection, fallbackCountry, selectedCountri
 
   const setUpGeolocation = async ({coords}) => {
     const countryName = await getCountryName(coords)
-    if (countryName) {
-      addCountryToSelection(countryName.toLowerCase())
+    const countrySlug = countryName.toLowerCase()
+    if (countryName && countries.find(({slug}) => countrySlug === slug)) {
+      addCountryToSelection(countrySlug)
       setGeolocationState(geolocationStates.loading)
     }
     else {
