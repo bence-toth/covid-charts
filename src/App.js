@@ -3,7 +3,7 @@ import {useState} from 'react'
 import countries from './countries'
 import getCountryData from './consumer'
 import geolocationStates from './geolocationStates'
-import {useGoogleCharts, useCountrySelectionStore, useGeolocation, useChartUpdate, useResizeListener} from './hooks'
+import {useCountrySelectionStore, useGeolocation, useChartUpdate, useResizeListener, useGoogleChartSetUp} from './hooks'
 
 import HamburgerMenu from 'react-hamburger-menu'
 import Fallback from './Fallback'
@@ -17,23 +17,16 @@ const App = () => {
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false)
   const [countryFilter, setCountryFilter] = useState('')
 
-  useGoogleCharts()
-
   const {
-    storedCountries: initialCountries,
+    storedCountries,
     addCountryToStore,
     removeCountryFromStore
   } = useCountrySelectionStore()
 
-  useGeolocation({
-    fallbackCountry,
-    addCountryToStore,
-    setGeolocationState,
-    setSelectedCountries,
-    setData
-  })
+  useGeolocation({addCountryToStore, setGeolocationState})
   useChartUpdate({data, selectedCountries})
   useResizeListener({data, selectedCountries, geolocationState})
+  useGoogleChartSetUp({countries: storedCountries, geolocationState, setGeolocationState, setSelectedCountries, setData})
 
   const toggleHamburgerMenu = () => {
     setIsHamburgerMenuOpen(!isHamburgerMenuOpen)

@@ -10,37 +10,38 @@ import geolocationStates from './geolocationStates'
 const google = window.google
 const localStorage = window.localStorage
 
-const getCountrySlug = coords => {
-  const code = countryIso.get(coords.latitude, coords.longitude)
-  return countryData.countries[code].name
-}
+const useGoogleChartSetUp = ({countries, geolocationState, setGeolocationState, setSelectedCountries, setData}) => {
+  const [didChartSetUp, setChartSetUp] = useState(false)
 
-const setUpChart = ({country, setGeolocationState, setSelectedCountries, setData}) => {
-  google.charts.setOnLoadCallback(async () => {
-    const data = await getCountryData(country)
-    setGeolocationState(geolocationStates.loaded)
-    setSelectedCountries([country])
-    setData({ [country]: data })
-  })
-}
+  useEffect(() => {
+    google.charts.load('current', {
+      packages: ['corechart']
+    })
+  }, [])
 
-const setUpGeolocation = async ({coords, setGeolocationState, setSelectedCountries, setData, addCountryToStore}) => {
-  const slug = getCountrySlug(coords).toLowerCase()
-  setGeolocationState(geolocationStates.loading)
-  addCountryToStore(slug)
-  setUpChart({country: slug, setGeolocationState, setSelectedCountries, setData})
-}
-
-const handleGeoError = async ({code, fallbackCountry, setGeolocationState, setSelectedCountries, setData}) => {
-  const disallowedByUser = code === 1
-  setGeolocationState(
-    disallowedByUser
-      ? geolocationStates.loadingFallback
-      : geolocationStates.failed
-  )
-  if (disallowedByUser) {
-    setUpChart({country: fallbackCountry, setGeolocationState, setSelectedCountries, setData})
-  }
+  useEffect(() => {
+    if ([geolocationStates.loading, geolocationStates.loadingFallback].includes(geolocationState) && !didChartSetUp) {
+      google.charts.setOnLoadCallback(async () => {
+        const allData = await Promise.all(countries.map(
+          country => getCountryData(country)
+        ))
+        setGeolocationState(geolocationStates.loaded)
+        setSelectedCountries(countries)
+        setChartSetUp(true)
+        setData(
+          allData
+            .map((data, index) => ({
+              country: countries[index],
+              data
+            }))
+            .reduce((accumulator, {country, data}) => ({
+              ...accumulator,
+              [country]: data
+            }), {})
+        )
+      })
+    }
+  }, [geolocationState, countries, didChartSetUp, setData, setGeolocationState, setSelectedCountries])
 }
 
 const useChartUpdate = ({data, selectedCountries}) => {
@@ -67,12 +68,32 @@ const useResizeListener = ({data, selectedCountries, geolocationState}) => {
   }, [selectedCountries, data, geolocationState])
 }
 
-const useGeolocation = ({fallbackCountry, addCountryToStore, setGeolocationState, setSelectedCountries, setData}) => {
+const useGeolocation = ({addCountryToStore, setGeolocationState}) => {
+  const getCountrySlug = coords => {
+    const code = countryIso.get(coords.latitude, coords.longitude)
+    return countryData.countries[code].name
+  }
+  
+  const setUpGeolocation = async ({coords, setGeolocationState, addCountryToStore}) => {
+    const slug = getCountrySlug(coords).toLowerCase()
+    setGeolocationState(geolocationStates.loading)
+    addCountryToStore(slug)
+  }
+  
+  const handleGeoError = async ({code, setGeolocationState}) => {
+    const disallowedByUser = code === 1
+    setGeolocationState(
+      disallowedByUser
+        ? geolocationStates.loadingFallback
+        : geolocationStates.failed
+    )
+  }
+
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        ({coords}) => setUpGeolocation({coords, setGeolocationState, setSelectedCountries, setData, addCountryToStore}),
-        ({code}) => handleGeoError({code, fallbackCountry, setGeolocationState, setSelectedCountries, setData})
+        ({coords}) => setUpGeolocation({coords, setGeolocationState, addCountryToStore}),
+        ({code}) => handleGeoError({code, setGeolocationState})
       )
     }
     // eslint-disable-next-line
@@ -112,18 +133,10 @@ const useCountrySelectionStore = () => {
   }
 }
 
-const useGoogleCharts = () => {
-  useEffect(() => {
-    google.charts.load('current', {
-      packages: ['corechart']
-    })
-  }, [])
-}
-
 export {
+  useGoogleChartSetUp,
   useChartUpdate,
   useResizeListener,
   useGeolocation,
-  useCountrySelectionStore,
-  useGoogleCharts
+  useCountrySelectionStore
 }
