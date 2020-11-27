@@ -48,7 +48,7 @@ const App = () => {
   })
   useChartUpdate({data, selectedCountries})
   useResizeListener({data, selectedCountries, geolocationState})
-  
+
   const actualCountryFilter = countryFilter.trim().toLowerCase()
 
   return (
