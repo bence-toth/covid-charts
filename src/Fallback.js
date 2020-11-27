@@ -4,17 +4,17 @@ const Fallback = ({geolocationState}) => (
   <div className="fallbackWrapper">
     {
       geolocationState === geolocationStates.requested && (
-        <div className='spinner-border spinner-warning'></div>
+        <div className='spinner-border spinner-warning' />
       )
     }
     {
       geolocationState === geolocationStates.loading && (
-        <div className='spinner-border spinner-success'></div>
+        <div className='spinner-border spinner-success' />
       )
     }
     {
       geolocationState === geolocationStates.loadingFallback && (
-        <div className='spinner-border spinner-danger'></div>
+        <div className='spinner-border spinner-danger' />
       )
     }
     {

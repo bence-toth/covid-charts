@@ -1,31 +1,25 @@
 import {useEffect, useLayoutEffect} from 'react'
 import debounce from 'lodash.debounce'
-import countryIso from 'country-iso'
-import countryData from 'country-data'
 
 import drawChart from './chart'
-import getCountryData from './consumer'
+import {getCovidData, getCountryName} from './consumer'
 import geolocationStates from './geolocationStates'
 
 const google = window.google
 
-const getCountrySlug = coords => {
-  const code = countryIso.get(coords.latitude, coords.longitude)
-  return countryData.countries[code].name
-}
-
 const setUpChart = ({country, setGeolocationState, setSelectedCountries, setData}) => {
   google.charts.setOnLoadCallback(async () => {
-    const data = await getCountryData(country)
+    const data = await getCovidData(country)
     setGeolocationState(geolocationStates.loaded)
     setSelectedCountries([country])
     setData({ [country]: data })
   })
 }
 
-const setUpGeolocation = async ({coords, setGeolocationState, setSelectedCountries, setData}) => {
-  const slug = getCountrySlug(coords).toLowerCase()
-  setGeolocationState(geolocationStates.loading)
+const setUpGeolocation = async ({coords, fallbackCountry, setGeolocationState, setSelectedCountries, setData}) => {
+  const countryName = await getCountryName(coords)
+  const slug = countryName ? countryName.toLowerCase() : fallbackCountry
+  setGeolocationState(countryName ? geolocationStates.loading : geolocationStates.loadingFallback)
   setUpChart({country: slug, setGeolocationState, setSelectedCountries, setData})
 }
 
@@ -69,7 +63,7 @@ const useGeolocation = ({fallbackCountry, setGeolocationState, setSelectedCountr
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        ({coords}) => setUpGeolocation({coords, setGeolocationState, setSelectedCountries, setData}),
+        ({coords}) => setUpGeolocation({coords, fallbackCountry, setGeolocationState, setSelectedCountries, setData}),
         ({code}) => handleGeoError({code, fallbackCountry, setGeolocationState, setSelectedCountries, setData})
       )
     }
