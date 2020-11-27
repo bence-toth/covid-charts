@@ -1,128 +1,135 @@
-import {useState} from 'react'
+import { useState } from "react";
 
-import countries from './countries'
-import {getCovidData} from './consumer'
-import geolocationStates from './geolocationStates'
-import {useGoogleCharts, useGeolocation, useChartUpdate, useResizeListener} from './hooks'
+import countries from "./countries";
+import { getCovidData } from "./consumer";
+import geolocationStates from "./geolocationStates";
+import {
+  useCountrySelectionStore,
+  useGeolocation,
+  useChartUpdate,
+  useResizeListener,
+  useGoogleChartSetUp,
+} from "./hooks";
 
-import HamburgerMenu from 'react-hamburger-menu'
-import Fallback from './Fallback'
+import HamburgerMenu from "react-hamburger-menu";
+import Fallback from "./Fallback";
 
-const fallbackCountry = 'denmark'
+const fallbackCountry = "denmark";
 
 const App = () => {
-  const [geolocationState, setGeolocationState] = useState(geolocationStates.requested)
-  const [selectedCountries, setSelectedCountries] = useState([])
-  const [data, setData] = useState({})
-  const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false)
-  const [countryFilter, setCountryFilter] = useState('')
+  const [data, setData] = useState({});
+  const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
+  const [countryFilter, setCountryFilter] = useState("");
+
+  const {
+    selectedCountries,
+    addCountryToSelection,
+    removeCountryFromSelection,
+  } = useCountrySelectionStore();
+
+  const { geolocationState, setGeolocationState } = useGeolocation({
+    addCountryToSelection,
+    fallbackCountry,
+    selectedCountries,
+  });
+
+  useChartUpdate({ data, selectedCountries });
+  useResizeListener({ data, selectedCountries, geolocationState });
+  useGoogleChartSetUp({
+    selectedCountries,
+    geolocationState,
+    setGeolocationState,
+    setData,
+  });
 
   const toggleHamburgerMenu = () => {
-    setIsHamburgerMenuOpen(!isHamburgerMenuOpen)
-  }
+    setIsHamburgerMenuOpen(!isHamburgerMenuOpen);
+  };
 
-  const toggleCountry = async selectedCountry => {
+  const toggleCountry = async (selectedCountry) => {
     if (selectedCountries.includes(selectedCountry)) {
       if (selectedCountries.length > 1) {
-        setSelectedCountries(selectedCountries.filter(slug => slug !== selectedCountry))
+        removeCountryFromSelection(selectedCountry);
       }
-    }
-    else {
-      setSelectedCountries([...selectedCountries, selectedCountry])
+    } else {
+      addCountryToSelection(selectedCountry);
       if (!data[selectedCountry]) {
-        const newData = await getCovidData(selectedCountry)
+        const newData = await getCovidData(selectedCountry);
         setData({
           ...data,
-          [selectedCountry]: newData
-        })
+          [selectedCountry]: newData,
+        });
       }
     }
-  }
+  };
 
-  useGoogleCharts()
-  useGeolocation({
-    fallbackCountry,
-    setGeolocationState,
-    setSelectedCountries,
-    setData
-  })
-  useChartUpdate({data, selectedCountries})
-  useResizeListener({data, selectedCountries, geolocationState})
-
-  const actualCountryFilter = countryFilter.trim().toLowerCase()
+  const actualCountryFilter = countryFilter.trim().toLowerCase();
 
   return (
     <>
-      <aside className={isHamburgerMenuOpen ? 'open' : ''}>
+      <aside className={isHamburgerMenuOpen ? "open" : ""}>
         <input
-          type='search'
+          type="search"
           value={countryFilter}
           onChange={(event) => {
-            setCountryFilter(event.target.value)
+            setCountryFilter(event.target.value);
           }}
-          placeholder='Search for country...'
+          placeholder="Search for country..."
         />
-        <div className='countries'>
+        <div className="countries">
           {countries
-            .filter(country => {
+            .filter((country) => {
               if (actualCountryFilter.length === 0) {
-                return true
+                return true;
               }
               if (selectedCountries.includes(country.slug)) {
-                return true
+                return true;
               }
-              return country.name.toLowerCase().includes(actualCountryFilter)
+              return country.name.toLowerCase().includes(actualCountryFilter);
             })
-            .map(country =>
-              <label
-                key={country.slug}
-                htmlFor={country.slug}
-              >
+            .map((country) => (
+              <label key={country.slug} htmlFor={country.slug}>
                 <input
                   type="checkbox"
                   id={country.slug}
                   checked={selectedCountries.includes(country.slug)}
                   onChange={() => {
                     if (geolocationState === geolocationStates.loaded) {
-                      toggleCountry(country.slug)
+                      toggleCountry(country.slug);
                     }
                   }}
                 />
                 {country.name}
               </label>
-            )
-          }
+            ))}
         </div>
       </aside>
       <main>
         <h1>
           <div>
-            7-day moving average of COVID-19 <br />deaths per million people
+            7-day moving average of COVID-19 <br />
+            deaths per million people
           </div>
         </h1>
-        {
-          (geolocationState === geolocationStates.loaded)
-          ? (
-            <div id='chart'></div>
-          )
-          : (
-            <Fallback geolocationState={geolocationState} />
-          )
-        }
+        {geolocationState === geolocationStates.loaded ? (
+          <div id="chart"></div>
+        ) : (
+          <Fallback geolocationState={geolocationState} />
+        )}
       </main>
-      <div className='hamburgerWrapper'>
+      <div className="hamburgerWrapper">
         <HamburgerMenu
           isOpen={isHamburgerMenuOpen}
           menuClicked={toggleHamburgerMenu}
           strokeWidth={3}
-          color='black'
+          color="black"
           animationDuration={0.25}
           width={30}
           height={30}
         />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

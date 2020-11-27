@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
 
 /* Nice scrollbars */
 ::-webkit-scrollbar {
@@ -15,7 +15,9 @@
   background-color: hsl(0, 0%, 70%);
 }
 
-html, body, #root {
+html,
+body,
+#root {
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -25,7 +27,7 @@ html, body, #root {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 #root {
@@ -44,7 +46,7 @@ aside .countries {
   user-select: none;
 }
 
-aside input[type=search] {
+aside input[type="search"] {
   display: block;
   width: 100%;
   padding: 10px;
@@ -121,7 +123,9 @@ h1 br {
 }
 
 @keyframes spinner-border {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .spinner-border {
@@ -129,11 +133,11 @@ h1 br {
   width: 2rem;
   height: 2rem;
   vertical-align: text-bottom;
-  border: .25em solid currentColor;
+  border: 0.25em solid currentColor;
   border-right-color: currentcolor;
   border-right-color: transparent;
   border-radius: 50%;
-  animation: spinner-border .75s linear infinite;
+  animation: spinner-border 0.75s linear infinite;
 }
 
 @media (max-width: 1200px) {
@@ -158,7 +162,7 @@ h1 br {
     z-index: 1;
   }
 
-  aside input[type=search] {
+  aside input[type="search"] {
     padding-right: 60px;
   }
 
@@ -166,7 +170,7 @@ h1 br {
     width: 100%;
   }
 
-  label[for=countryMenuVisible] {
+  label[for="countryMenuVisible"] {
     display: block;
     position: absolute;
     top: 0;
