@@ -3,7 +3,7 @@ import {useState} from 'react'
 import countries from './countries'
 import getCountryData from './consumer'
 import geolocationStates from './geolocationStates'
-import {useGoogleCharts, useGeolocation, useChartUpdate, useResizeListener} from './hooks'
+import {useGoogleCharts, useCountrySelectionStore, useGeolocation, useChartUpdate, useResizeListener} from './hooks'
 
 import HamburgerMenu from 'react-hamburger-menu'
 import Fallback from './Fallback'
@@ -17,6 +17,24 @@ const App = () => {
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false)
   const [countryFilter, setCountryFilter] = useState('')
 
+  useGoogleCharts()
+
+  const {
+    storedCountries: initialCountries,
+    addCountryToStore,
+    removeCountryFromStore
+  } = useCountrySelectionStore()
+
+  useGeolocation({
+    fallbackCountry,
+    addCountryToStore,
+    setGeolocationState,
+    setSelectedCountries,
+    setData
+  })
+  useChartUpdate({data, selectedCountries})
+  useResizeListener({data, selectedCountries, geolocationState})
+
   const toggleHamburgerMenu = () => {
     setIsHamburgerMenuOpen(!isHamburgerMenuOpen)
   }
@@ -25,10 +43,12 @@ const App = () => {
     if (selectedCountries.includes(selectedCountry)) {
       if (selectedCountries.length > 1) {
         setSelectedCountries(selectedCountries.filter(slug => slug !== selectedCountry))
+        removeCountryFromStore(selectedCountry)
       }
     }
     else {
       setSelectedCountries([...selectedCountries, selectedCountry])
+      addCountryToStore(selectedCountry)
       if (!data[selectedCountry]) {
         const newData = await getCountryData(selectedCountry)
         setData({
@@ -38,16 +58,6 @@ const App = () => {
       }
     }
   }
-
-  useGoogleCharts()
-  useGeolocation({
-    fallbackCountry,
-    setGeolocationState,
-    setSelectedCountries,
-    setData
-  })
-  useChartUpdate({data, selectedCountries})
-  useResizeListener({data, selectedCountries, geolocationState})
   
   const actualCountryFilter = countryFilter.trim().toLowerCase()
 
