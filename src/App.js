@@ -11,7 +11,6 @@ import Fallback from './Fallback'
 const fallbackCountry = 'denmark'
 
 const App = () => {
-  const [geolocationState, setGeolocationState] = useState(geolocationStates.requested)
   const [selectedCountries, setSelectedCountries] = useState([])
   const [data, setData] = useState({})
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false)
@@ -23,7 +22,11 @@ const App = () => {
     removeCountryFromStore
   } = useCountrySelectionStore()
 
-  useGeolocation({addCountryToStore, setGeolocationState})
+  const {
+    geolocationState,
+    setGeolocationState
+  } = useGeolocation({addCountryToStore})
+
   useChartUpdate({data, selectedCountries})
   useResizeListener({data, selectedCountries, geolocationState})
   useGoogleChartSetUp({

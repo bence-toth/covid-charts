@@ -68,7 +68,9 @@ const useResizeListener = ({data, selectedCountries, geolocationState}) => {
   }, [selectedCountries, data, geolocationState])
 }
 
-const useGeolocation = ({addCountryToStore, setGeolocationState}) => {
+const useGeolocation = ({addCountryToStore}) => {
+  const [geolocationState, setGeolocationState] = useState(geolocationStates.requested)
+
   const getCountrySlug = coords => {
     const code = countryIso.get(coords.latitude, coords.longitude)
     return countryData.countries[code].name
@@ -98,6 +100,11 @@ const useGeolocation = ({addCountryToStore, setGeolocationState}) => {
     }
     // eslint-disable-next-line
   }, [])
+
+  return {
+    geolocationState,
+    setGeolocationState
+  }
 }
 
 const useCountrySelectionStore = () => {
@@ -123,7 +130,9 @@ const useCountrySelectionStore = () => {
   }
 
   const removeCountryFromStore = country => {
-    setStoredCountries(storedCountries => storedCountries.filter(storedCountry => storedCountry !== country))
+    setStoredCountries(storedCountries => storedCountries.filter(
+      storedCountry => storedCountry !== country
+    ))
   }
 
   return {
