@@ -109,14 +109,14 @@ const useCountrySelectionStore = () => {
   const [storedCountries, setStoredCountries] = useState([])
 
   useEffect(() => {
-    const countries = localStorage.getItem('storedCountries')
+    const countries = localStorage.getItem('selectedCountries')
     if (countries) {
       setStoredCountries(countries.split(','))
     }
   }, [])
 
   useEffect(() => {
-    localStorage.setItem('storedCountries', storedCountries.join(','))
+    localStorage.setItem('selectedCountries', storedCountries.join(','))
   }, [storedCountries])
 
   const addCountryToStore = country => {

@@ -3,7 +3,13 @@ import {useState} from 'react'
 import countries from './countries'
 import {getCovidData} from './consumer'
 import geolocationStates from './geolocationStates'
-import {useCountrySelectionStore, useGeolocation, useChartUpdate, useResizeListener, useGoogleChartSetUp} from './hooks'
+import {
+  useCountrySelectionStore,
+  useGeolocation,
+  useChartUpdate,
+  useResizeListener,
+  useGoogleChartSetUp
+} from './hooks'
 
 import HamburgerMenu from 'react-hamburger-menu'
 import Fallback from './Fallback'
