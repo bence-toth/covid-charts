@@ -42,9 +42,11 @@ const getMovingWeeklyAverageOfDailyDeaths = dataPoints => (
     })
 )
 
-const getCountryData = async slug => {
+const getCovidData = async slug => {
   const population = countries.find(({slug: slugToFind}) => slug === slugToFind).population
-  const response = await fetch(`https://api.covid19api.com/total/dayone/country/${slug}/status/deaths`)
+  const response = await fetch(
+    `https://api.covid19api.com/total/dayone/country/${slug}/status/deaths`
+  )
   const dataPoints = await response.json()
   const dateOfFirstConfirmedCase = getDateOfFirstConfirmedCase(dataPoints)
   const dateOfLastConfirmedCase = getDateOfLastConfirmedCase(dataPoints)
@@ -59,4 +61,18 @@ const getCountryData = async slug => {
   }
 }
 
-export default getCountryData
+const getCountryName = async ({latitude, longitude}) => {
+  const response = await fetch([
+    'https://api.bigdatacloud.net/data/reverse-geocode-client',
+    `?latitude=${latitude}`,
+    `&longitude=${longitude}`,
+    '&localityLanguage=en'
+  ].join(''))
+  const geoData = await response.json()
+  return geoData?.countryName
+}
+
+export {
+  getCovidData,
+  getCountryName
+}

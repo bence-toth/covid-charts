@@ -1,10 +1,8 @@
 import {useState, useEffect, useLayoutEffect} from 'react'
 import debounce from 'lodash.debounce'
-import countryIso from 'country-iso'
-import countryData from 'country-data'
 
 import drawChart from './chart'
-import getCountryData from './consumer'
+import {getCovidData, getCountryName} from './consumer'
 import geolocationStates from './geolocationStates'
 
 const google = window.google
@@ -23,7 +21,7 @@ const useGoogleChartSetUp = ({countries, geolocationState, setGeolocationState, 
     if ([geolocationStates.loading, geolocationStates.loadingFallback].includes(geolocationState) && !didChartSetUp) {
       google.charts.setOnLoadCallback(async () => {
         const allData = await Promise.all(countries.map(
-          country => getCountryData(country)
+          country => getCovidData(country)
         ))
         setGeolocationState(geolocationStates.loaded)
         setSelectedCountries(countries)
@@ -70,16 +68,16 @@ const useResizeListener = ({data, selectedCountries, geolocationState}) => {
 
 const useGeolocation = ({addCountryToStore}) => {
   const [geolocationState, setGeolocationState] = useState(geolocationStates.requested)
-
-  const getCountrySlug = coords => {
-    const code = countryIso.get(coords.latitude, coords.longitude)
-    return countryData.countries[code].name
-  }
   
   const setUpGeolocation = async ({coords, setGeolocationState, addCountryToStore}) => {
-    const slug = getCountrySlug(coords).toLowerCase()
-    setGeolocationState(geolocationStates.loading)
-    addCountryToStore(slug)
+    const countryName = await getCountryName(coords)
+    if (countryName) {
+      addCountryToStore(countryName.toLowerCase())
+      setGeolocationState(geolocationStates.loading)
+    }
+    else {
+      setGeolocationState(geolocationStates.loadingFallback)
+    }
   }
   
   const handleGeoError = async ({code, setGeolocationState}) => {

@@ -1,7 +1,7 @@
 import {useState} from 'react'
 
 import countries from './countries'
-import getCountryData from './consumer'
+import {getCovidData} from './consumer'
 import geolocationStates from './geolocationStates'
 import {useCountrySelectionStore, useGeolocation, useChartUpdate, useResizeListener, useGoogleChartSetUp} from './hooks'
 
@@ -54,7 +54,7 @@ const App = () => {
       setSelectedCountries([...selectedCountries, selectedCountry])
       addCountryToStore(selectedCountry)
       if (!data[selectedCountry]) {
-        const newData = await getCountryData(selectedCountry)
+        const newData = await getCovidData(selectedCountry)
         setData({
           ...data,
           [selectedCountry]: newData
@@ -97,7 +97,9 @@ const App = () => {
                   id={country.slug}
                   checked={selectedCountries.includes(country.slug)}
                   onChange={() => {
-                    toggleCountry(country.slug)
+                    if (geolocationState === geolocationStates.loaded) {
+                      toggleCountry(country.slug)
+                    }
                   }}
                 />
                 {country.name}
