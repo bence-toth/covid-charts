@@ -8,7 +8,7 @@ import geolocationStates from './geolocationStates'
 const google = window.google
 const localStorage = window.localStorage
 
-const useGoogleChartSetUp = ({countries, geolocationState, setGeolocationState, setSelectedCountries, setData}) => {
+const useGoogleChartSetUp = ({selectedCountries, geolocationState, setGeolocationState, setData}) => {
   const [didChartSetUp, setChartSetUp] = useState(false)
 
   useEffect(() => {
@@ -20,16 +20,15 @@ const useGoogleChartSetUp = ({countries, geolocationState, setGeolocationState, 
   useEffect(() => {
     if ([geolocationStates.loading, geolocationStates.loadingFallback].includes(geolocationState) && !didChartSetUp) {
       google.charts.setOnLoadCallback(async () => {
-        const allData = await Promise.all(countries.map(
+        const allData = await Promise.all(selectedCountries.map(
           country => getCovidData(country)
         ))
         setGeolocationState(geolocationStates.loaded)
-        setSelectedCountries(countries)
         setChartSetUp(true)
         setData(
           allData
             .map((data, index) => ({
-              country: countries[index],
+              country: selectedCountries[index],
               data
             }))
             .reduce((accumulator, {country, data}) => ({
@@ -39,7 +38,7 @@ const useGoogleChartSetUp = ({countries, geolocationState, setGeolocationState, 
         )
       })
     }
-  }, [geolocationState, countries, didChartSetUp, setData, setGeolocationState, setSelectedCountries])
+  }, [geolocationState, selectedCountries, didChartSetUp, setData, setGeolocationState])
 }
 
 const useChartUpdate = ({data, selectedCountries}) => {
@@ -66,21 +65,23 @@ const useResizeListener = ({data, selectedCountries, geolocationState}) => {
   }, [selectedCountries, data, geolocationState])
 }
 
-const useGeolocation = ({addCountryToStore}) => {
+const useGeolocation = ({addCountryToSelection, fallbackCountry, selectedCountries}) => {
   const [geolocationState, setGeolocationState] = useState(geolocationStates.requested)
-  
-  const setUpGeolocation = async ({coords, setGeolocationState, addCountryToStore}) => {
+
+  const setUpGeolocation = async ({coords}) => {
     const countryName = await getCountryName(coords)
     if (countryName) {
-      addCountryToStore(countryName.toLowerCase())
+      addCountryToSelection(countryName.toLowerCase())
       setGeolocationState(geolocationStates.loading)
     }
     else {
+      addCountryToSelection(fallbackCountry)
       setGeolocationState(geolocationStates.loadingFallback)
     }
   }
-  
-  const handleGeoError = async ({code, setGeolocationState}) => {
+
+  const handleGeoError = async ({code}) => {
+    addCountryToSelection(fallbackCountry)
     const disallowedByUser = code === 1
     setGeolocationState(
       disallowedByUser
@@ -90,11 +91,15 @@ const useGeolocation = ({addCountryToStore}) => {
   }
 
   useEffect(() => {
-    if (navigator.geolocation) {
+    const isNoCountrySelected = selectedCountries.length === 0
+    if (isNoCountrySelected && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        ({coords}) => setUpGeolocation({coords, setGeolocationState, addCountryToStore}),
-        ({code}) => handleGeoError({code, setGeolocationState})
+        setUpGeolocation,
+        handleGeoError
       )
+    }
+    else {
+      setGeolocationState(geolocationStates.loading)
     }
     // eslint-disable-next-line
   }, [])
@@ -106,37 +111,38 @@ const useGeolocation = ({addCountryToStore}) => {
 }
 
 const useCountrySelectionStore = () => {
-  const [storedCountries, setStoredCountries] = useState([])
+  const countries = localStorage.getItem('selectedCountries')
+  const [selectedCountries, setSelectedCountries] = useState(countries ? countries.split(',') : [])
 
   useEffect(() => {
     const countries = localStorage.getItem('selectedCountries')
     if (countries) {
-      setStoredCountries(countries.split(','))
+      setSelectedCountries(countries.split(','))
     }
   }, [])
 
   useEffect(() => {
-    localStorage.setItem('selectedCountries', storedCountries.join(','))
-  }, [storedCountries])
+    localStorage.setItem('selectedCountries', selectedCountries.join(','))
+  }, [selectedCountries])
 
-  const addCountryToStore = country => {
-    setStoredCountries(storedCountries =>
-      !storedCountries.includes(country)
-        ? [...storedCountries, country]
-        : storedCountries
+  const addCountryToSelection = (country) => {
+    setSelectedCountries(selectedCountries =>
+      !selectedCountries.includes(country)
+        ? [...selectedCountries, country]
+        : selectedCountries
     )
   }
 
-  const removeCountryFromStore = country => {
-    setStoredCountries(storedCountries => storedCountries.filter(
+  const removeCountryFromSelection = country => {
+    setSelectedCountries(selectedCountries => selectedCountries.filter(
       storedCountry => storedCountry !== country
     ))
   }
 
   return {
-    storedCountries,
-    addCountryToStore,
-    removeCountryFromStore
+    selectedCountries,
+    addCountryToSelection,
+    removeCountryFromSelection
   }
 }
 

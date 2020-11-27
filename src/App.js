@@ -17,31 +17,27 @@ import Fallback from './Fallback'
 const fallbackCountry = 'denmark'
 
 const App = () => {
-  const [selectedCountries, setSelectedCountries] = useState([])
   const [data, setData] = useState({})
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false)
   const [countryFilter, setCountryFilter] = useState('')
 
   const {
-    storedCountries,
-    addCountryToStore,
-    removeCountryFromStore
+    selectedCountries,
+    addCountryToSelection,
+    removeCountryFromSelection
   } = useCountrySelectionStore()
 
   const {
     geolocationState,
     setGeolocationState
-  } = useGeolocation({addCountryToStore})
+  } = useGeolocation({addCountryToSelection, fallbackCountry, selectedCountries})
 
   useChartUpdate({data, selectedCountries})
   useResizeListener({data, selectedCountries, geolocationState})
   useGoogleChartSetUp({
-    countries: storedCountries.length > 0
-      ? storedCountries
-      : [fallbackCountry],
+    selectedCountries,
     geolocationState,
     setGeolocationState,
-    setSelectedCountries,
     setData
   })
 
@@ -52,13 +48,11 @@ const App = () => {
   const toggleCountry = async selectedCountry => {
     if (selectedCountries.includes(selectedCountry)) {
       if (selectedCountries.length > 1) {
-        setSelectedCountries(selectedCountries.filter(slug => slug !== selectedCountry))
-        removeCountryFromStore(selectedCountry)
+        removeCountryFromSelection(selectedCountry)
       }
     }
     else {
-      setSelectedCountries([...selectedCountries, selectedCountry])
-      addCountryToStore(selectedCountry)
+      addCountryToSelection(selectedCountry)
       if (!data[selectedCountry]) {
         const newData = await getCovidData(selectedCountry)
         setData({
@@ -68,7 +62,7 @@ const App = () => {
       }
     }
   }
-  
+
   const actualCountryFilter = countryFilter.trim().toLowerCase()
 
   return (
