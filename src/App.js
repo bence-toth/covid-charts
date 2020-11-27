@@ -83,7 +83,9 @@ const App = () => {
                   id={country.slug}
                   checked={selectedCountries.includes(country.slug)}
                   onChange={() => {
-                    toggleCountry(country.slug)
+                    if (geolocationState === geolocationStates.loaded) {
+                      toggleCountry(country.slug)
+                    }
                   }}
                 />
                 {country.name}
