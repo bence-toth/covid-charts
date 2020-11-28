@@ -5,8 +5,6 @@ import drawChart from "./chart";
 import { getCovidData, getCountryName } from "./consumer";
 import geolocationStates from "./geolocationStates";
 
-import countries from "./countries";
-
 const google = window.google;
 const localStorage = window.localStorage;
 
@@ -62,37 +60,38 @@ const useGoogleChartSetUp = ({
   ]);
 };
 
-const useChartUpdate = ({ data, selectedCountries }) => {
+const useChartUpdate = ({ data, selectedCountries, countries }) => {
   useLayoutEffect(() => {
     if (google.visualization) {
       if (!selectedCountries.some((country) => !data[country])) {
-        drawChart({ data, selectedCountries });
+        drawChart({ data, selectedCountries, countries });
       }
     }
-  }, [data, selectedCountries]);
+  }, [data, selectedCountries, countries]);
 };
 
-const useResizeListener = ({ data, selectedCountries, geolocationState }) => {
+const useResizeListener = ({ data, selectedCountries, geolocationState, countries }) => {
   useLayoutEffect(() => {
     const listener = debounce(() => {
       if (
         !selectedCountries.some((country) => !data[country]) &&
         geolocationState === geolocationStates.loaded
       ) {
-        drawChart({ data, selectedCountries });
+        drawChart({ data, selectedCountries, countries });
       }
     }, 250);
     window.addEventListener("resize", listener);
     return () => {
       window.removeEventListener("resize", listener);
     };
-  }, [selectedCountries, data, geolocationState]);
+  }, [selectedCountries, data, geolocationState, countries]);
 };
 
 const useGeolocation = ({
   addCountryToSelection,
   fallbackCountry,
   selectedCountries,
+  countries
 }) => {
   const [geolocationState, setGeolocationState] = useState(
     geolocationStates.requested
