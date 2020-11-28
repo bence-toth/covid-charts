@@ -1,28 +1,11 @@
-import countries from "./countries";
+const getCountries = async () => {
+  const response = await fetch('https://raw.githubusercontent.com/bence-toth/covid-data/main/data/countries.json');
+  const result = await response.json();
+  return result.countriesAndProvinces.filter(area => !area.province)
+}
 
-const getDateOfFirstConfirmedCase = (dataPoints) =>
-  new Date(dataPoints[0].Date);
-
-const getDateOfLastConfirmedCase = (dataPoints) =>
-  new Date(dataPoints[dataPoints.length - 1].Date);
-
-const getDailyDeaths = (dataPoints) => {
-  const correctedDataPoints = dataPoints
-    .map(({ Cases }) => Cases)
-    .map((_, todayIndex, dataPoints) => {
-      return Math.min(...dataPoints.slice(todayIndex));
-    });
-  return correctedDataPoints.map((deathsToday, todayIndex, dataPoints) => {
-    if (todayIndex === 0) {
-      return deathsToday;
-    }
-    const deathsYesterday = dataPoints[todayIndex - 1];
-    return deathsToday - deathsYesterday;
-  });
-};
-
-const getMovingWeeklyAverageOfDailyDeaths = (dataPoints) =>
-  getDailyDeaths(dataPoints).map((dataPoint, dataPointIndex, dataPoints) => {
+const getMovingWeeklyAverage = (dataPoints) =>
+  dataPoints.map((dataPoint, dataPointIndex, dataPoints) => {
     return (
       (dataPoint +
         (dataPoints[dataPointIndex - 1] || 0) +
@@ -36,25 +19,12 @@ const getMovingWeeklyAverageOfDailyDeaths = (dataPoints) =>
   });
 
 const getCovidData = async (slug) => {
-  const population = countries.find(
-    ({ slug: slugToFind }) => slug === slugToFind
-  ).population;
   const response = await fetch(
-    `https://api.covid19api.com/total/dayone/country/${slug}/status/deaths`
+    `https://raw.githubusercontent.com/bence-toth/covid-data/main/data/died/daily/per-million/${slug}.json`
   );
-  const dataPoints = await response.json();
-  const dateOfFirstConfirmedCase = getDateOfFirstConfirmedCase(dataPoints);
-  const dateOfLastConfirmedCase = getDateOfLastConfirmedCase(dataPoints);
-  const movingWeeklyAverageOfDailyDeaths = getMovingWeeklyAverageOfDailyDeaths(
-    dataPoints
-  );
-  const movingWeeklyAverageOfDailyDeathsPerMillion = movingWeeklyAverageOfDailyDeaths.map(
-    (deaths) => (deaths * 1000000) / population
-  );
+  const {dailyDeathsPerMillion} = await response.json();
   return {
-    dateOfFirstConfirmedCase,
-    dateOfLastConfirmedCase,
-    movingWeeklyAverageOfDailyDeathsPerMillion,
+    movingWeeklyAverageOfDailyDeathsPerMillion: getMovingWeeklyAverage(dailyDeathsPerMillion),
   };
 };
 
@@ -71,4 +41,4 @@ const getCountryName = async ({ latitude, longitude }) => {
   return geoData?.countryName;
 };
 
-export { getCovidData, getCountryName };
+export { getCountries, getCovidData, getCountryName };
