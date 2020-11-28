@@ -1,8 +1,10 @@
-import countries from "./countries";
-
 const google = window.google;
 
-const drawChart = ({ data, selectedCountries }) => {
+const drawChart = ({ data, selectedCountries, countries }) => {
+  if (countries.length === 0) {
+    return
+  }
+
   const displayedCountries = selectedCountries.map((country) => ({
     slug: country,
     name: countries.find(({ slug }) => slug === country).name,
@@ -11,31 +13,18 @@ const drawChart = ({ data, selectedCountries }) => {
     endDate: data[country].dateOfLastConfirmedCase,
   }));
 
-  const longestDatasetLength = Math.max(
-    ...displayedCountries.map(({ data }) => data.length)
-  );
+  const startDate = 1579651200000 // 22 January 2020
 
-  const earliestStartDate = Math.min(
-    ...displayedCountries.map(({ startDate }) => startDate.getTime())
-  );
-
-  displayedCountries.forEach((country) => {
-    if (country.data.length < longestDatasetLength) {
-      country.data.unshift(
-        ...new Array(longestDatasetLength - country.data.length).fill(0)
-      );
-    }
-  });
-
-  const chartData = google.visualization.arrayToDataTable([
+  const chartDataSource = [
     ["Date", ...displayedCountries.map(({ name }) => name)],
-    ...new Array(longestDatasetLength)
-      .fill(null)
+    ...displayedCountries[0].data
       .map((_, dataPointIndex) => [
-        new Date(earliestStartDate + dataPointIndex * 1000 * 60 * 60 * 24),
+        new Date(startDate + dataPointIndex * 1000 * 60 * 60 * 24),
         ...displayedCountries.map(({ data }) => data[dataPointIndex]),
       ]),
-  ]);
+  ]
+
+  const chartData = google.visualization.arrayToDataTable(chartDataSource);
 
   const chartElement = document.getElementById("chart");
 

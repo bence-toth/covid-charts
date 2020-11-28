@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import countries from "./countries";
-import { getCovidData } from "./consumer";
+import { getCovidData, getCountries } from "./consumer";
 import geolocationStates from "./geolocationStates";
 import {
   useCountrySelectionStore,
@@ -17,6 +16,11 @@ import Fallback from "./Fallback";
 const fallbackCountry = "denmark";
 
 const App = () => {
+  const [countries, setCountries] = useState([])
+  useEffect(() => {
+    getCountries().then(setCountries)
+  }, [])
+
   const [data, setData] = useState({});
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
   const [countryFilter, setCountryFilter] = useState("");
@@ -31,10 +35,11 @@ const App = () => {
     addCountryToSelection,
     fallbackCountry,
     selectedCountries,
+    countries
   });
 
-  useChartUpdate({ data, selectedCountries });
-  useResizeListener({ data, selectedCountries, geolocationState });
+  useChartUpdate({ data, selectedCountries, countries });
+  useResizeListener({ data, selectedCountries, geolocationState, countries });
   useGoogleChartSetUp({
     selectedCountries,
     geolocationState,
