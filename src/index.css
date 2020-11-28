@@ -200,3 +200,45 @@ h1 br {
     line-height: 1.35;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: black;
+    color: hsl(0, 0%, 90%);
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: hsl(0, 0%, 2.5%);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: hsl(0, 0%, 30%);
+  }
+
+  aside input[type="search"] {
+    background-color: black;
+    color: inherit;
+  }
+
+  aside label:hover {
+    background-color: hsl(0, 0%, 15%);
+  }
+
+  .spinner-success {
+    color: #28a745;
+  }
+
+  .spinner-warning {
+    color: #ffc107;
+  }
+
+  .spinner-danger {
+    color: #dc3545;
+  }
+}
+
+@media (max-width: 1200px) and (prefers-color-scheme: dark) {
+  aside {
+    background-color: black;
+  }
+}
