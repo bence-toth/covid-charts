@@ -60,31 +60,31 @@ const useGoogleChartSetUp = ({
   ]);
 };
 
-const useChartUpdate = ({ data, selectedCountries, countries }) => {
+const useChartUpdate = ({ data, selectedCountries, countries, isDark }) => {
   useLayoutEffect(() => {
     if (google.visualization) {
       if (!selectedCountries.some((country) => !data[country])) {
-        drawChart({ data, selectedCountries, countries });
+        drawChart({ data, selectedCountries, countries, isDark });
       }
     }
-  }, [data, selectedCountries, countries]);
+  }, [data, selectedCountries, countries, isDark]);
 };
 
-const useResizeListener = ({ data, selectedCountries, geolocationState, countries }) => {
+const useResizeListener = ({ data, selectedCountries, geolocationState, countries, isDark }) => {
   useLayoutEffect(() => {
     const listener = debounce(() => {
       if (
         !selectedCountries.some((country) => !data[country]) &&
         geolocationState === geolocationStates.loaded
       ) {
-        drawChart({ data, selectedCountries, countries });
+        drawChart({ data, selectedCountries, countries, isDark });
       }
     }, 250);
     window.addEventListener("resize", listener);
     return () => {
       window.removeEventListener("resize", listener);
     };
-  }, [selectedCountries, data, geolocationState, countries]);
+  }, [selectedCountries, data, geolocationState, countries, isDark]);
 };
 
 const useGeolocation = ({

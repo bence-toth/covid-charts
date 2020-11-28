@@ -1,6 +1,62 @@
 const google = window.google;
 
-const drawChart = ({ data, selectedCountries, countries }) => {
+const getChartOptions = ({isDark = false, chartElement}) => {
+  return {
+    fontName: "Poppins",
+    chartArea: {
+      width: chartElement.clientWidth,
+      height: chartElement.clientHeight - 50,
+      top: 0,
+      right: 0,
+    },
+    tooltip: {
+      trigger: "selection",
+      isHtml: true
+    },
+    crosshair: {
+      trigger: "both",
+      orientation: "vertical",
+    },
+    hAxis: {
+      format: "yyyy-MM-dd",
+      viewWindowMode: "pretty",
+      textPosition: "out",
+      ...(isDark && {
+        gridlines: {
+          color: '#121212'
+        },
+        minorGridlines: {
+          color: '#121212'
+        },
+        textStyle: {
+          color: '#e6e6e6'
+        }
+      })
+    },
+    ...(isDark && {
+      backgroundColor: '#000000',
+      vAxis: {
+        gridlines: {
+          color: '#121212'
+        },
+        minorGridlines: {
+          color: '#121212'
+        },
+        textStyle: {
+          color: '#e6e6e6'
+        }
+      },
+      legend: {
+        textStyle: {
+          color: '#e6e6e6'
+        }
+      }
+    }),
+    theme: "maximized",
+  };
+};
+
+const drawChart = ({ data, selectedCountries, countries, isDark }) => {
   if (countries.length === 0) {
     return
   }
@@ -31,28 +87,7 @@ const drawChart = ({ data, selectedCountries, countries }) => {
   if (chartElement) {
     const chart = new google.visualization.LineChart(chartElement);
 
-    const options = {
-      fontName: "Poppins",
-      chartArea: {
-        width: chartElement.clientWidth,
-        height: chartElement.clientHeight - 50,
-        top: 0,
-        right: 0,
-      },
-      tooltip: {
-        trigger: "selection",
-      },
-      crosshair: {
-        trigger: "both",
-        orientation: "vertical",
-      },
-      hAxis: {
-        format: "yyyy-MM-dd",
-        viewWindowMode: "pretty",
-        textPosition: "out",
-      },
-      theme: "maximized",
-    };
+    const options = getChartOptions({isDark, chartElement})
 
     chart.draw(chartData, options);
   }

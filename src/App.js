@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import useMediaQuery from 'react-hook-media-query'
 
 import { getCovidData, getCountries } from "./consumer";
 import geolocationStates from "./geolocationStates";
@@ -24,6 +25,7 @@ const App = () => {
   const [data, setData] = useState({});
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
   const [countryFilter, setCountryFilter] = useState("");
+  const isDark = useMediaQuery('(prefers-color-scheme: dark)')
 
   const {
     selectedCountries,
@@ -38,8 +40,8 @@ const App = () => {
     countries
   });
 
-  useChartUpdate({ data, selectedCountries, countries });
-  useResizeListener({ data, selectedCountries, geolocationState, countries });
+  useChartUpdate({ data, selectedCountries, countries, isDark });
+  useResizeListener({ data, selectedCountries, geolocationState, countries, isDark });
   useGoogleChartSetUp({
     selectedCountries,
     geolocationState,
@@ -127,7 +129,7 @@ const App = () => {
           isOpen={isHamburgerMenuOpen}
           menuClicked={toggleHamburgerMenu}
           strokeWidth={3}
-          color="black"
+          color={isDark ? "hsl(0, 0%, 90%)" : "black"}
           animationDuration={0.25}
           width={30}
           height={30}
