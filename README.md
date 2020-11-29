@@ -31,3 +31,13 @@ Kudos to GitHub for making the collaboration on this project possible.
 Kudos to [Netlify](https://www.netlify.com/) for the free web hosting.
 
 
+## Contributions
+
+Contributions are welcome.
+
+Is something wrong? [File a bug report.](https://github.com/bence-toth/covid-charts/issues/new)
+
+Can something be improved? Fork [the repository on GitHub](https://github.com/bence-toth/covid-charts) and create a pull request.
+
+Do you have any questions? Feel free to reach out at tothab@gmail.com.
+
