@@ -18,3 +18,16 @@ It’s entirely free, no ads, no tracking cookies.
 Stay safe!
 
 
+## Acknowledgements
+
+Special thanks to [Bancho Petrov](https://github.com/bancho22) for his contributions to this project.
+
+Kudos to the Johns Hopkins University Center for Systems Science and Engineering for preparing the COVID-19 data and making it available through the [2019 Novel Coronavirus Visual Dashboard](https://github.com/CSSEGISandData/COVID-19).
+
+Kudos to [Big Data Cloud](https://www.bigdatacloud.com/) for making [a free client side reverse geocoding API](https://www.bigdatacloud.com/geocoding-apis/free-reverse-geocode-to-city-api) available.
+
+Kudos to GitHub for making the collaboration on this project possible.
+
+Kudos to [Netlify](https://www.netlify.com/) for the free web hosting.
+
+
