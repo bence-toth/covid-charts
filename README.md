@@ -41,3 +41,7 @@ Can something be improved? Fork [the repository on GitHub](https://github.com/be
 
 Do you have any questions? Feel free to reach out at tothab@gmail.com.
 
+
+## License
+
+MIT. Do what you will.
