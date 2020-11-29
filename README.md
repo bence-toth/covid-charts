@@ -1,4 +1,4 @@
-# COVID-19 charts
+# COVID-19 charts :chart_with_upwards_trend:
 
 A web application rendering a chart with the 7-day moving average of new coronavirus-related deaths per one million inhabitants for selected countries.
 
