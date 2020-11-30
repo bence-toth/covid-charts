@@ -120,17 +120,19 @@ const useGeolocation = ({
   };
 
   useEffect(() => {
-    const isNoCountrySelected = selectedCountries.length === 0;
-    if (isNoCountrySelected && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        setUpGeolocation,
-        handleGeoError
-      );
-    } else {
-      setGeolocationState(geolocationStates.loading);
+    if (countries.length > 0) {
+      const isNoCountrySelected = selectedCountries.length === 0;
+      if (isNoCountrySelected && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          setUpGeolocation,
+          handleGeoError
+        );
+      } else {
+        setGeolocationState(geolocationStates.loading);
+      }
     }
     // eslint-disable-next-line
-  }, []);
+  }, [countries]);
 
   return {
     geolocationState,
