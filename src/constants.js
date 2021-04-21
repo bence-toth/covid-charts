@@ -6,4 +6,13 @@ const geolocationStates = Object.freeze({
   loaded: "loaded",
 });
 
-export default geolocationStates;
+const dataTypes = Object.freeze({
+  died: "deaths",
+  confirmed: "cases",
+  recovered: "recoveries",
+});
+
+export {
+  geolocationStates,
+  dataTypes,
+};

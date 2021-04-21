@@ -3,7 +3,8 @@ import debounce from "lodash.debounce";
 
 import drawChart from "./chart";
 import { getCovidData, getCountryName } from "./consumer";
-import geolocationStates from "./geolocationStates";
+import { mapDataToState } from './helper';
+import { geolocationStates } from "./constants";
 
 const google = window.google;
 const localStorage = window.localStorage;
@@ -11,6 +12,7 @@ const localStorage = window.localStorage;
 const useGoogleChartSetUp = ({
   selectedCountries,
   geolocationState,
+  displayedDataType,
   setGeolocationState,
   setData,
 }) => {
@@ -31,29 +33,17 @@ const useGoogleChartSetUp = ({
     ) {
       google.charts.setOnLoadCallback(async () => {
         const allData = await Promise.all(
-          selectedCountries.map((country) => getCovidData(country))
+          selectedCountries.map((country) => getCovidData({ slug: country, type: displayedDataType }))
         );
         setGeolocationState(geolocationStates.loaded);
         setChartSetUp(true);
-        setData(
-          allData
-            .map((data, index) => ({
-              country: selectedCountries[index],
-              data,
-            }))
-            .reduce(
-              (accumulator, { country, data }) => ({
-                ...accumulator,
-                [country]: data,
-              }),
-              {}
-            )
-        );
+        mapDataToState({ setData, selectedCountries, allData });
       });
     }
   }, [
     geolocationState,
     selectedCountries,
+    displayedDataType,
     didChartSetUp,
     setData,
     setGeolocationState,
@@ -178,10 +168,25 @@ const useCountrySelectionStore = () => {
   };
 };
 
+const useDataTypeSwitch = ({
+  selectedCountries,
+  displayedDataType,
+  setData,
+}) => {
+  useEffect(async () => {
+    const allData = await Promise.all(
+      selectedCountries.map((country) => getCovidData({ slug: country, type: displayedDataType }))
+    );
+    mapDataToState({ setData, selectedCountries, allData });
+    // eslint-disable-next-line
+  }, [displayedDataType])
+}
+
 export {
   useGoogleChartSetUp,
   useChartUpdate,
   useResizeListener,
   useGeolocation,
   useCountrySelectionStore,
+  useDataTypeSwitch,
 };

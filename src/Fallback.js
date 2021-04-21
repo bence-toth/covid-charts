@@ -1,4 +1,4 @@
-import geolocationStates from "./geolocationStates";
+import { geolocationStates } from "./constants";
 
 const Fallback = ({ geolocationState }) => (
   <div className="fallbackWrapper">

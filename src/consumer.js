@@ -18,14 +18,13 @@ const getMovingWeeklyAverage = (dataPoints) =>
     );
   });
 
-const getCovidData = async (slug) => {
+const getCovidData = async ({ slug, type }) => {
   const response = await fetch(
-    `https://raw.githubusercontent.com/bence-toth/covid-data/main/data/died/daily/per-million/${slug}.json`
+    `https://raw.githubusercontent.com/bence-toth/covid-data/main/data/${type}/daily/per-million/${slug}.json`
   );
-  const {dailyDeathsPerMillion} = await response.json();
-  return {
-    movingWeeklyAverageOfDailyDeathsPerMillion: getMovingWeeklyAverage(dailyDeathsPerMillion),
-  };
+  const result = await response.json();
+  const dataKey = Object.keys(result)[0];
+  return { movingWeeklyAveragePerMillion: getMovingWeeklyAverage(result[dataKey]) };
 };
 
 const getCountryName = async ({ latitude, longitude }) => {
