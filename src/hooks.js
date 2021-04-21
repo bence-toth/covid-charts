@@ -173,11 +173,14 @@ const useDataTypeSwitch = ({
   displayedDataType,
   setData,
 }) => {
-  useEffect(async () => {
-    const allData = await Promise.all(
-      selectedCountries.map((country) => getCovidData({ slug: country, type: displayedDataType }))
-    );
-    mapDataToState({ setData, selectedCountries, allData });
+  useEffect(() => {
+    const fetchAndMapData = async () => {
+      const allData = await Promise.all(
+        selectedCountries.map((country) => getCovidData({ slug: country, type: displayedDataType }))
+      );
+      mapDataToState({ setData, selectedCountries, allData });
+    };
+    fetchAndMapData();
     // eslint-disable-next-line
   }, [displayedDataType])
 }
