@@ -43,15 +43,16 @@ const App = () => {
     countries
   });
 
-  useChartUpdate({ data, selectedCountries, countries, isDark });
-  useResizeListener({ data, selectedCountries, geolocationState, countries, isDark });
-  useGoogleChartSetUp({
+  const { didChartSetUp } = useGoogleChartSetUp({
     selectedCountries,
     geolocationState,
     displayedDataType,
     setGeolocationState,
     setData,
   });
+
+  useChartUpdate({ data, selectedCountries, countries, isDark, didChartSetUp });
+  useResizeListener({ data, selectedCountries, geolocationState, countries, isDark, didChartSetUp });
 
   useDataTypeSwitch({
     selectedCountries,

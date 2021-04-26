@@ -48,24 +48,27 @@ const useGoogleChartSetUp = ({
     setData,
     setGeolocationState,
   ]);
+
+  return { didChartSetUp };
 };
 
-const useChartUpdate = ({ data, selectedCountries, countries, isDark }) => {
+const useChartUpdate = ({ data, selectedCountries, countries, isDark, didChartSetUp }) => {
   useLayoutEffect(() => {
-    if (google.visualization) {
+    if (didChartSetUp) {
       if (!selectedCountries.some((country) => !data[country])) {
         drawChart({ data, selectedCountries, countries, isDark });
       }
     }
-  }, [data, selectedCountries, countries, isDark]);
+  }, [data, selectedCountries, countries, isDark, didChartSetUp]);
 };
 
-const useResizeListener = ({ data, selectedCountries, geolocationState, countries, isDark }) => {
+const useResizeListener = ({ data, selectedCountries, geolocationState, countries, isDark, didChartSetUp }) => {
   useLayoutEffect(() => {
     const listener = debounce(() => {
       if (
         !selectedCountries.some((country) => !data[country]) &&
-        geolocationState === geolocationStates.loaded
+        geolocationState === geolocationStates.loaded &&
+        didChartSetUp
       ) {
         drawChart({ data, selectedCountries, countries, isDark });
       }
@@ -74,7 +77,7 @@ const useResizeListener = ({ data, selectedCountries, geolocationState, countrie
     return () => {
       window.removeEventListener("resize", listener);
     };
-  }, [selectedCountries, data, geolocationState, countries, isDark]);
+  }, [selectedCountries, data, geolocationState, countries, isDark, didChartSetUp]);
 };
 
 const useGeolocation = ({
