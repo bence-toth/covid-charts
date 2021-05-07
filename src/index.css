@@ -161,10 +161,11 @@ h1 br {
 
 @media (max-width: 1200px) {
   .header {
-    max-width: 90%;
+    padding-right: 50px;
   }
 
-  .headerText, .dataTypeSelector {
+  .headerText,
+  .dataTypeSelector {
     font-size: clamp(14px, 2.75vw, 20px);
     text-align: center;
     line-height: 1.1;
@@ -226,6 +227,12 @@ h1 br {
   h1 {
     font-weight: bold;
     line-height: 1.35;
+  }
+  .headerText:first-child {
+    text-align: right;
+  }
+  .headerText:last-child {
+    text-align: left;
   }
 }
 
