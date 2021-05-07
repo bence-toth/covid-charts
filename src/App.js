@@ -2,16 +2,18 @@ import { useEffect, useState } from "react";
 import useMediaQuery from 'react-hook-media-query'
 
 import { getCovidData, getCountries } from "./consumer";
-import geolocationStates from "./geolocationStates";
+import { geolocationStates, dataTypes } from "./constants";
 import {
   useCountrySelectionStore,
   useGeolocation,
   useChartUpdate,
   useResizeListener,
   useGoogleChartSetUp,
+  useDataTypeSwitch,
 } from "./hooks";
 
 import HamburgerMenu from "react-hamburger-menu";
+import Select from 'react-select';
 import Fallback from "./Fallback";
 
 const fallbackCountry = "denmark";
@@ -23,6 +25,7 @@ const App = () => {
   }, [])
 
   const [data, setData] = useState({});
+  const [displayedDataType, setDisplayedDataType] = useState(Object.keys(dataTypes)[0]);
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
   const [countryFilter, setCountryFilter] = useState("");
   const isDark = useMediaQuery('(prefers-color-scheme: dark)')
@@ -40,12 +43,20 @@ const App = () => {
     countries
   });
 
-  useChartUpdate({ data, selectedCountries, countries, isDark });
-  useResizeListener({ data, selectedCountries, geolocationState, countries, isDark });
-  useGoogleChartSetUp({
+  const { didChartSetUp } = useGoogleChartSetUp({
     selectedCountries,
     geolocationState,
+    displayedDataType,
     setGeolocationState,
+    setData,
+  });
+
+  useChartUpdate({ data, selectedCountries, countries, isDark, didChartSetUp });
+  useResizeListener({ data, selectedCountries, geolocationState, countries, isDark, didChartSetUp });
+
+  useDataTypeSwitch({
+    selectedCountries,
+    displayedDataType,
     setData,
   });
 
@@ -61,7 +72,7 @@ const App = () => {
     } else {
       addCountryToSelection(selectedCountry);
       if (!data[selectedCountry]) {
-        const newData = await getCovidData(selectedCountry);
+        const newData = await getCovidData({ slug: selectedCountry, type: displayedDataType });
         setData({
           ...data,
           [selectedCountry]: newData,
@@ -112,12 +123,16 @@ const App = () => {
         </div>
       </aside>
       <main>
-        <h1>
-          <div>
-            7-day moving average of COVID-19 <br />
-            deaths per million people
-          </div>
-        </h1>
+        <div className="header">
+          <span className="headerText">7-day moving average of COVID-19</span>
+          <Select
+            className="dataTypeSelector"
+            value={{ value: displayedDataType, label: dataTypes[displayedDataType] }}
+            options={Object.keys(dataTypes).map(dataType => ({ value: dataType, label: dataTypes[dataType] }))}
+            onChange={({value}) => setDisplayedDataType(value)}
+          />
+          <span className="headerText">per million people</span>
+        </div>
         {geolocationState === geolocationStates.loaded ? (
           <div id="chart"></div>
         ) : (

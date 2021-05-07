@@ -3,7 +3,8 @@ import debounce from "lodash.debounce";
 
 import drawChart from "./chart";
 import { getCovidData, getCountryName } from "./consumer";
-import geolocationStates from "./geolocationStates";
+import { mapDataToState } from './helper';
+import { geolocationStates } from "./constants";
 
 const google = window.google;
 const localStorage = window.localStorage;
@@ -11,6 +12,7 @@ const localStorage = window.localStorage;
 const useGoogleChartSetUp = ({
   selectedCountries,
   geolocationState,
+  displayedDataType,
   setGeolocationState,
   setData,
 }) => {
@@ -31,51 +33,42 @@ const useGoogleChartSetUp = ({
     ) {
       google.charts.setOnLoadCallback(async () => {
         const allData = await Promise.all(
-          selectedCountries.map((country) => getCovidData(country))
+          selectedCountries.map((country) => getCovidData({ slug: country, type: displayedDataType }))
         );
         setGeolocationState(geolocationStates.loaded);
         setChartSetUp(true);
-        setData(
-          allData
-            .map((data, index) => ({
-              country: selectedCountries[index],
-              data,
-            }))
-            .reduce(
-              (accumulator, { country, data }) => ({
-                ...accumulator,
-                [country]: data,
-              }),
-              {}
-            )
-        );
+        mapDataToState({ setData, selectedCountries, allData });
       });
     }
   }, [
     geolocationState,
     selectedCountries,
+    displayedDataType,
     didChartSetUp,
     setData,
     setGeolocationState,
   ]);
+
+  return { didChartSetUp };
 };
 
-const useChartUpdate = ({ data, selectedCountries, countries, isDark }) => {
+const useChartUpdate = ({ data, selectedCountries, countries, isDark, didChartSetUp }) => {
   useLayoutEffect(() => {
-    if (google.visualization) {
+    if (didChartSetUp) {
       if (!selectedCountries.some((country) => !data[country])) {
         drawChart({ data, selectedCountries, countries, isDark });
       }
     }
-  }, [data, selectedCountries, countries, isDark]);
+  }, [data, selectedCountries, countries, isDark, didChartSetUp]);
 };
 
-const useResizeListener = ({ data, selectedCountries, geolocationState, countries, isDark }) => {
+const useResizeListener = ({ data, selectedCountries, geolocationState, countries, isDark, didChartSetUp }) => {
   useLayoutEffect(() => {
     const listener = debounce(() => {
       if (
         !selectedCountries.some((country) => !data[country]) &&
-        geolocationState === geolocationStates.loaded
+        geolocationState === geolocationStates.loaded &&
+        didChartSetUp
       ) {
         drawChart({ data, selectedCountries, countries, isDark });
       }
@@ -84,7 +77,7 @@ const useResizeListener = ({ data, selectedCountries, geolocationState, countrie
     return () => {
       window.removeEventListener("resize", listener);
     };
-  }, [selectedCountries, data, geolocationState, countries, isDark]);
+  }, [selectedCountries, data, geolocationState, countries, isDark, didChartSetUp]);
 };
 
 const useGeolocation = ({
@@ -178,10 +171,28 @@ const useCountrySelectionStore = () => {
   };
 };
 
+const useDataTypeSwitch = ({
+  selectedCountries,
+  displayedDataType,
+  setData,
+}) => {
+  useEffect(() => {
+    const fetchAndMapData = async () => {
+      const allData = await Promise.all(
+        selectedCountries.map((country) => getCovidData({ slug: country, type: displayedDataType }))
+      );
+      mapDataToState({ setData, selectedCountries, allData });
+    };
+    fetchAndMapData();
+    // eslint-disable-next-line
+  }, [displayedDataType])
+}
+
 export {
   useGoogleChartSetUp,
   useChartUpdate,
   useResizeListener,
   useGeolocation,
   useCountrySelectionStore,
+  useDataTypeSwitch,
 };

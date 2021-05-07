@@ -64,7 +64,7 @@ const drawChart = ({ data, selectedCountries, countries, isDark }) => {
   const displayedCountries = selectedCountries.map((country) => ({
     slug: country,
     name: countries.find(({ slug }) => slug === country).name,
-    data: data[country].movingWeeklyAverageOfDailyDeathsPerMillion,
+    data: data[country].movingWeeklyAveragePerMillion,
     startDate: data[country].dateOfFirstConfirmedCase,
     endDate: data[country].dateOfLastConfirmedCase,
   }));
